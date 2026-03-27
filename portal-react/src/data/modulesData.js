@@ -1,0 +1,317 @@
+export const notaMTData = {
+  pointsTotal: '5.800',
+  pointsRedeemed: '4.550',
+  pointsAvailable: '1.250',
+  lastDrawDate: 'Mensal Março/2025',
+  drawResult: 'Premiado!',
+};
+
+export const vehiclesData = [
+  {
+    id: 1,
+    plate: 'QNJ5F88',
+    model: 'Fiat Pulse - 2023/2024',
+    detailsLink: '#detalhes-veiculo-1',
+    sections: [
+      {
+        type: 'ipva',
+        label: 'IPVA 2025',
+        icon: 'receipt',
+        status: 'A Vencer',
+        statusTag: 'warning',
+        value: 'R$ 450,00',
+        dueDate: 'Vence: 30/04/2025',
+        actionLabel: 'Pagar Agora',
+        actionLink: '#pagar-ipva-veic-1',
+        actionVariant: 'primary',
+      },
+      {
+        type: 'licenciamento',
+        label: 'Licenciamento 2025',
+        icon: 'description',
+        status: 'A Vencer',
+        statusTag: 'warning',
+        value: 'R$ 195,45',
+        dueDate: 'Vence: 30/04/2025',
+        actionLabel: 'Emitir Guia',
+        actionLink: '#emitir-guia-licenc',
+        actionVariant: 'primary',
+      },
+      {
+        type: 'multas',
+        label: 'Multas',
+        icon: 'warning_amber',
+        status: '1 Pendente',
+        statusTag: 'danger',
+        value: 'R$ 293,47',
+        dueDate: 'Infração: XXX',
+        actionLabel: 'Ver/Pagar',
+        actionLink: '#ver-multa-1',
+        actionVariant: 'danger',
+      },
+    ],
+  },
+  {
+    id: 2,
+    plate: 'QBE1A11',
+    model: 'Honda Biz 125 - 2022/2022',
+    detailsLink: '#detalhes-veiculo-2',
+    collapsible: true,
+    sections: [
+      {
+        type: 'ipva',
+        label: 'IPVA 2025',
+        icon: 'receipt',
+        status: 'Pago',
+        statusTag: 'success',
+        value: 'Integral',
+        dueDate: '',
+      },
+      {
+        type: 'licenciamento',
+        label: 'Licenciamento 2024',
+        icon: 'description',
+        status: 'Vencido',
+        statusTag: 'danger',
+        value: 'R$ 188,50',
+        dueDate: 'Ref. 2024',
+        actionLabel: 'Regularizar',
+        actionLink: '#emitir-guia-licenc-2',
+        actionVariant: 'danger',
+      },
+      {
+        type: 'multas',
+        label: 'Multas',
+        icon: 'warning_amber',
+        status: 'Nenhuma',
+        statusTag: 'success',
+        value: '-',
+        dueDate: '',
+      },
+    ],
+  },
+];
+
+export const processesData = [
+  {
+    id: 1,
+    number: 'PROT20250410001',
+    subject: 'Solicitação Isenção IPVA - QNJ5F88',
+    subjectPreview: 'Solicitação...',
+    lastUpdate: '16/04/2025',
+    status: 'Em Análise',
+    statusTag: 'info',
+    link: '#detalhes-processo-1',
+  },
+  {
+    id: 2,
+    number: 'PROT20240920155',
+    subject: 'Revisão de Lançamento Fiscal',
+    subjectPreview: 'Revisão...',
+    lastUpdate: '15/04/2025',
+    status: 'Pendente',
+    statusTag: 'warning',
+    link: '#detalhes-processo-4',
+  },
+  {
+    id: 3,
+    number: 'PROT20241105010',
+    subject: 'Pagamento ITCD - Doação Bens',
+    subjectPreview: 'Pagamento...',
+    lastUpdate: '15/04/2025',
+    status: 'Concluído',
+    statusTag: 'success',
+    link: '#historico-processo-3',
+    collapsible: true,
+  },
+];
+
+export const tadsData = [
+  {
+    id: 1,
+    term: '2025/78901',
+    origin: 'Fiscalização Volante',
+    value: 'R$ 1.230,00',
+    impugnarLink: '#impugnar-tad-1',
+    pagarLink: '#pagar-tad-1',
+  },
+  {
+    id: 2,
+    term: '2024/55667',
+    origin: 'Posto Fiscal',
+    value: 'R$ 450,00',
+    impugnarLink: '#impugnar-tad-2',
+    pagarLink: '#pagar-tad-2',
+  },
+  {
+    id: 3,
+    term: '2024/12345',
+    origin: 'Correios',
+    value: 'R$ 780,50',
+    impugnarLink: '#impugnar-tad-3',
+    pagarLink: '#pagar-tad-3',
+    collapsible: true,
+  },
+];
+
+export const installmentsData = [
+  {
+    id: 1,
+    description: 'Dívida Ativa - CDA 2025/112233',
+    nextInstallment: 'Parc. 1/4 - Venc. 10/05/2025',
+    value: 'R$ 225,80',
+    detailsLink: '#detalhes-parc-1',
+    boletoLink: '#gerar-boleto-parc-1',
+  },
+  {
+    id: 2,
+    description: 'ITCD - Proc. 20241105010',
+    nextInstallment: 'Parc. 6/6 - Venc. 20/04/2025',
+    value: 'R$ 200,00',
+    detailsLink: '#detalhes-parc-2',
+    boletoLink: '#gerar-boleto-parc-2',
+    collapsible: true,
+  },
+  {
+    id: 3,
+    description: 'IPVA 2023 - QBE1A11',
+    nextInstallment: 'Parc. 3/3 - Venc. 30/04/2025',
+    value: 'R$ 95,00',
+    detailsLink: '#detalhes-parc-3',
+    boletoLink: '#gerar-boleto-parc-3',
+    collapsible: true,
+  },
+];
+
+export const paymentHistoryData = [
+  { date: '2025-01-15', tributo: 'IPVA', valor: 450.00 },
+  { date: '2025-02-10', tributo: 'ITCD', valor: 200.00 },
+  { date: '2025-03-05', tributo: 'IPVA', valor: 450.00 },
+  { date: '2025-03-20', tributo: 'Licenciamento', valor: 195.45 },
+  { date: '2024-01-10', tributo: 'IPVA', valor: 380.00 },
+  { date: '2024-02-15', tributo: 'ITCD', valor: 200.00 },
+  { date: '2024-03-20', tributo: 'Licenciamento', valor: 175.30 },
+  { date: '2024-04-10', tributo: 'IPVA', valor: 380.00 },
+  { date: '2024-05-05', tributo: 'ITCD', valor: 200.00 },
+  { date: '2024-06-15', tributo: 'IPVA', valor: 380.00 },
+  { date: '2024-07-20', tributo: 'Licenciamento', valor: 175.30 },
+  { date: '2024-08-10', tributo: 'ITCD', valor: 200.00 },
+  { date: '2024-09-15', tributo: 'IPVA', valor: 380.00 },
+  { date: '2024-10-05', tributo: 'Licenciamento', valor: 175.30 },
+  { date: '2024-11-20', tributo: 'ITCD', valor: 200.00 },
+  { date: '2024-12-10', tributo: 'IPVA', valor: 380.00 },
+];
+
+export const purchasesData = {
+  'Abril 2025': {
+    count: 2,
+    open: true,
+    items: [
+      { date: '05/04/2025', company: 'Supermercado Comper', value: 'R$ 150,70', link: '#ver-nfe-1' },
+      { date: '02/04/2025', company: 'Drogaria Americana', value: 'R$ 85,30', link: '#ver-nfe-2' },
+    ],
+  },
+  'Março 2025': {
+    count: 5,
+    open: false,
+    collapsible: true,
+    items: [
+      { date: '28/03/2025', company: 'Posto Amazônia', value: 'R$ 180,00', link: '#ver-nfe-3' },
+      { date: '15/03/2025', company: 'Restaurante Sabor Cuiabano', value: 'R$ 65,00', link: '#ver-nfe-4' },
+      { date: '10/03/2025', company: 'Supermercado Comper', value: 'R$ 210,25', link: '#ver-nfe-5' },
+      { date: '08/03/2025', company: 'Lojas Renner', value: 'R$ 350,00', link: '#ver-nfe-6' },
+      { date: '01/03/2025', company: 'Papelaria Grafite', value: 'R$ 45,50', link: '#ver-nfe-7' },
+    ],
+  },
+};
+
+export const nfaeData = [
+  {
+    id: 1,
+    number: '54321',
+    date: '15/03/2025',
+    recipient: 'Carlos Souza',
+    recipientDoc: '111.222.333-44',
+    value: 'R$ 800,00',
+    status: 'Normal',
+    statusTag: 'success',
+    viewLink: '#ver-nfae-3',
+    cancelLink: '#cancelar-nfae-3',
+  },
+  {
+    id: 2,
+    number: '51005',
+    date: '01/02/2025',
+    recipient: 'Empresa Exemplo LTDA',
+    recipientDoc: '01.234.567/0001-88',
+    value: 'R$ 2.500,00',
+    status: 'Normal',
+    statusTag: 'success',
+    viewLink: '#ver-nfae-4',
+    cancelDisabled: true,
+    collapsible: true,
+  },
+  {
+    id: 3,
+    number: '49870',
+    date: '10/01/2025',
+    recipient: 'Maria Oliveira',
+    recipientDoc: '555.666.777-88',
+    value: 'R$ 150,00',
+    status: 'Cancelada',
+    statusTag: 'error',
+    viewLink: '#ver-nfae-5',
+    collapsible: true,
+  },
+  {
+    id: 4,
+    number: '48112',
+    date: '05/12/2024',
+    recipient: 'José Andrade',
+    recipientDoc: '999.888.777-66',
+    value: 'R$ 1.120,00',
+    status: 'Normal',
+    statusTag: 'success',
+    viewLink: '#ver-nfae-6',
+    cancelDisabled: true,
+    collapsible: true,
+  },
+];
+
+export const dividaAtivaData = {
+  debitos: [
+    {
+      cda: '2025/112233',
+      origin: 'IPVA 2024 - QNJ5F88',
+      value: 'R$ 875,30',
+      actionLink: '#negociar-cda-1',
+      actionLabel: 'Negociar/Pagar',
+    },
+  ],
+  protestos: [
+    {
+      cda: '2024/987654',
+      cartorio: '2º Ofício - Cuiabá',
+      value: 'R$ 1.500,00*',
+      actionLink: '#regularizar-protesto-1',
+      actionLabel: 'Regularizar',
+    },
+  ],
+  execucoes: [
+    {
+      processo: '0012345-67.2024.8.11.0041',
+      origin: 'CDA 2023/556677',
+      value: 'R$ 5.680,00',
+      status: 'Em Andamento',
+      statusTag: 'info',
+    },
+  ],
+};
+
+export const companiesData = [
+  { ie: '13.123.456-7', name: 'COMERCIO VAREJISTA EXEMPLO LTDA', cnpj: '01.234.567/0001-88', status: 'Ativo', statusTag: 'success', link: '#detalhes-empresa-1' },
+  { ie: '13.987.654-3', name: 'SERVICOS DE CONSULTORIA XYZ ME', cnpj: '98.765.432/0001-11', status: 'Baixado', statusTag: 'error', link: '#detalhes-empresa-2' },
+  { ie: '13.333.111-0', name: 'AGROPECUARIA FAZENDA FELIZ S.A.', cnpj: '11.222.333/0001-44', status: 'Ativo Não Regular', statusTag: 'info', link: '#detalhes-empresa-3' },
+  { ie: 'Isento', name: 'ALPHA SERVIÇOS DE LIMPEZA LTDA', cnpj: '22.444.666/0001-55', status: 'Ativo', statusTag: 'success', link: '#detalhes-empresa-4' },
+  { ie: 'Não Aplicável', name: 'CONSULTORIA TI BETA EIRELI', cnpj: '33.555.777/0001-99', status: 'Ativo', statusTag: 'success', link: '#detalhes-empresa-5' },
+];
