@@ -4,9 +4,8 @@ interface PendencyData {
   [key: string]: boolean;
 }
 
-interface FormData {
-  [key: string]: unknown;
-}
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
+type FormData = Record<string, any>;
 
 type TipoSolicitacao =
   | "pcd-condutor"
@@ -19,7 +18,8 @@ interface IsencaoPcdContextType {
   setPendency: (path: string, hasPendency: boolean) => void;
   clearPendency: (path: string) => void;
   formData: FormData;
-  updateFormData: (key: string, value: unknown) => void;
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  updateFormData: (key: string, value: any) => void;
   tipoSolicitacao: TipoSolicitacao;
   setTipoSolicitacao: (tipo: TipoSolicitacao) => void;
   resetContext: () => void;
@@ -47,7 +47,8 @@ export function IsencaoPcdProvider({ children }: { children: ReactNode }) {
     });
   };
 
-  const updateFormData = (key: string, value: unknown) => {
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  const updateFormData = (key: string, value: any) => {
     setFormData((prev) => ({ ...prev, [key]: value }));
   };
 
