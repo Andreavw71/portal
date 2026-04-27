@@ -1775,6 +1775,145 @@ plasmo-csui#ff-overlay-container, plasmo-csui#real-time-panel {
                     </div> <a href="https://albertofmorais.github.io/Portal-Atendimento/#consulta-completa-vinculos" class="view-all">Consultar Cadastro Completo</a> </div>
                </section>
 
+                <section class="pcd-service-detail" id="ipva-icms-isencao-veiculo" data-module-id="ipva-icms-isencao-veiculo" aria-labelledby="pcd-heading">
+                    <style>
+                        @import url('https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700;800&display=swap');
+                        .pcd-service-detail{position:relative;width:100vw;margin-left:calc(50% - 50vw);margin-right:calc(50% - 50vw);background:#fff;font-family:'Manrope',ui-sans-serif,system-ui,-apple-system,sans-serif;color:#111827;box-shadow:0 1px 3px rgba(0,0,0,.04);border-radius:0;padding:0;border:1px solid #f3f4f6}
+                        .pcd-service-detail *{box-sizing:border-box}
+                        .pcd-service-detail .pcd-band{padding-left:max(32px,calc((100vw - 1212px)/2));padding-right:max(32px,calc((100vw - 1212px)/2))}
+                        .pcd-service-detail .pcd-back-bar{padding-top:24px;padding-bottom:20px;border-bottom:1.25px solid #e5e7eb;background:#fff}
+                        .pcd-service-detail .pcd-back-link{display:inline-flex;align-items:center;gap:8px;color:#4b5563;font-size:14px;font-weight:500;text-decoration:none;line-height:20px}
+                        .pcd-service-detail .pcd-back-link:hover{color:#2563eb}
+                        .pcd-service-detail .pcd-back-link .material-icons-outlined{font-size:16px}
+                        .pcd-service-detail .pcd-hero{position:relative;background:linear-gradient(180deg,rgba(249,250,251,.5) 0%,#fff 100%);padding-top:64px;padding-bottom:64px;border-bottom:1.25px solid #f3f4f6}
+                        .pcd-service-detail .pcd-hero::before{content:"";position:absolute;top:0;left:0;right:0;height:4px;background:linear-gradient(90deg,#2563eb 0%,#60a5fa 100%)}
+                        .pcd-service-detail .pcd-meta-row{display:flex;align-items:center;flex-wrap:wrap;gap:12px;margin-bottom:24px}
+                        .pcd-service-detail .pcd-meta-eyebrow{color:#6b7280;font-size:12px;font-weight:600;letter-spacing:.05em;text-transform:uppercase;line-height:16px}
+                        .pcd-service-detail .pcd-meta-sep{color:#d1d5db;font-size:16px;line-height:24px}
+                        .pcd-service-detail .pcd-meta-item{display:inline-flex;align-items:center;gap:6px;color:#4b5563;font-size:14px;line-height:20px}
+                        .pcd-service-detail .pcd-meta-item .material-icons-outlined{font-size:14px;color:#4b5563}
+                        .pcd-service-detail .pcd-tag-free{display:inline-flex;align-items:center;gap:6px;padding:4px 12px;background:#dcfce7;color:#15803d;font-size:14px;font-weight:600;line-height:20px;border-radius:9999px}
+                        .pcd-service-detail .pcd-tag-free .material-icons-outlined{font-size:14px;color:#15803d}
+                        .pcd-service-detail .pcd-title{margin:0 0 16px;color:#111827;font-size:48px;font-weight:700;line-height:1.1;letter-spacing:-.02em;max-width:920px}
+                        .pcd-service-detail .pcd-subtitle{margin:0 0 36px;color:#4b5563;font-size:18px;font-weight:400;line-height:28px;max-width:780px}
+                        .pcd-service-detail .pcd-cta-row{display:flex;align-items:center;flex-wrap:wrap;gap:24px}
+                        .pcd-service-detail .pcd-cta-primary{display:inline-flex;align-items:center;justify-content:center;gap:8px;padding:0 32px;height:56px;background:#2563eb;color:#fff;font-size:16px;font-weight:600;line-height:24px;border-radius:10px;text-decoration:none;box-shadow:0 1px 3px rgba(0,0,0,.10),0 1px 2px -1px rgba(0,0,0,.10);transition:background .15s ease}
+                        .pcd-service-detail .pcd-cta-primary:hover{background:#1d4ed8}
+                        .pcd-service-detail .pcd-cta-primary .material-icons-outlined{font-size:16px}
+                        .pcd-service-detail .pcd-cta-meta{display:inline-flex;align-items:center;gap:8px;color:#4b5563;font-size:14px;font-weight:400;line-height:20px}
+                        .pcd-service-detail .pcd-cta-meta .material-icons-outlined{font-size:16px;color:#9ca3af}
+                        .pcd-service-detail .pcd-cta-meta-light{display:inline-flex;align-items:center;gap:6px;color:#6b7280;font-size:14px;line-height:20px}
+                        .pcd-service-detail .pcd-cta-meta-light .material-icons-outlined{font-size:14px;color:#6b7280}
+                        .pcd-service-detail .pcd-tabs{display:flex;align-items:stretch;gap:32px;height:56px;background:#fff;border-bottom:1.25px solid #e5e7eb;overflow-x:auto;scrollbar-width:none}
+                        .pcd-service-detail .pcd-tabs::-webkit-scrollbar{display:none}
+                        .pcd-service-detail .pcd-tab{display:inline-flex;align-items:center;color:#4b5563;font-size:14px;font-weight:600;line-height:20px;text-decoration:none;border-bottom:1.25px solid transparent;white-space:nowrap;transition:color .15s ease,border-color .15s ease}
+                        .pcd-service-detail .pcd-tab:hover{color:#111827}
+                        .pcd-service-detail .pcd-tab.is-active{color:#2563eb;border-bottom-color:#2563eb}
+                        .pcd-service-detail .pcd-content{background:#fff;padding-top:64px;padding-bottom:64px}
+                        .pcd-service-detail .pcd-section-header h2{margin:0 0 8px;color:#111827;font-size:24px;font-weight:700;line-height:32px}
+                        .pcd-service-detail .pcd-section-header p{margin:0;color:#4b5563;font-size:16px;font-weight:400;line-height:24px}
+                        .pcd-service-detail .pcd-eligibility-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:20px;margin-top:40px}
+                        .pcd-service-detail .pcd-card{display:flex;align-items:flex-start;gap:16px;padding:20px;background:#fff;border:1.25px solid #e5e7eb;border-radius:12px;box-shadow:0 1px 2px rgba(0,0,0,.05)}
+                        .pcd-service-detail .pcd-card-icon{display:inline-flex;align-items:center;justify-content:center;flex-shrink:0;width:36px;height:36px;background:#f0fdf4;border:1.25px solid #bbf7d0;border-radius:16px}
+                        .pcd-service-detail .pcd-card-icon .material-icons-outlined{font-size:18px;color:#16a34a;font-weight:700}
+                        .pcd-service-detail .pcd-card h3{margin:0 0 5px;color:#111827;font-size:16px;font-weight:600;line-height:24px}
+                        .pcd-service-detail .pcd-card p{margin:0;color:#4b5563;font-size:16px;font-weight:400;line-height:24px;text-align:justify}
+                        .pcd-service-detail .pcd-divider{margin-top:64px;border-top:1.25px solid #e5e7eb}
+                        .pcd-service-detail .pcd-lgpd{display:flex;align-items:flex-start;gap:16px;margin-top:48px;padding:24px;background:#eff6ff;border:1.25px solid #bfdbfe;border-radius:10px}
+                        .pcd-service-detail .pcd-lgpd-icon{display:inline-flex;align-items:center;justify-content:center;flex-shrink:0;width:40px;height:40px;background:#dbeafe;border-radius:10px}
+                        .pcd-service-detail .pcd-lgpd-icon .material-icons-outlined{font-size:20px;color:#1d4ed8}
+                        .pcd-service-detail .pcd-lgpd h3{margin:0 0 4px;color:#111827;font-size:18px;font-weight:600;line-height:28px}
+                        .pcd-service-detail .pcd-lgpd p{margin:0;color:#374151;font-size:14px;font-weight:400;line-height:24px}
+                        @media (max-width:1024px){
+                            .pcd-service-detail .pcd-band{padding-left:24px;padding-right:24px}
+                            .pcd-service-detail .pcd-title{font-size:36px}
+                            .pcd-service-detail .pcd-eligibility-grid{grid-template-columns:1fr}
+                        }
+                        @media (max-width:640px){
+                            .pcd-service-detail .pcd-hero{padding-top:40px;padding-bottom:40px}
+                            .pcd-service-detail .pcd-title{font-size:28px}
+                            .pcd-service-detail .pcd-subtitle{font-size:16px;line-height:24px}
+                            .pcd-service-detail .pcd-cta-primary{width:100%}
+                            .pcd-service-detail .pcd-content{padding-top:40px;padding-bottom:40px}
+                        }
+                    </style>
+
+                    <div class="pcd-band pcd-back-bar">
+                        <a href="https://albertofmorais.github.io/Portal-Atendimento/#servicos-todos" class="pcd-back-link">
+                            <span class="material-icons-outlined" aria-hidden="true">arrow_back</span>
+                            Voltar aos serviços
+                        </a>
+                    </div>
+
+                    <div class="pcd-band pcd-hero">
+                        <div class="pcd-meta-row">
+                            <span class="pcd-meta-eyebrow">Perfil Cidadão</span>
+                            <span class="pcd-meta-sep" aria-hidden="true">•</span>
+                            <span class="pcd-meta-item"><span class="material-icons-outlined" aria-hidden="true">schedule</span>5 minutos</span>
+                            <span class="pcd-meta-sep" aria-hidden="true">•</span>
+                            <span class="pcd-tag-free"><span class="material-icons-outlined" aria-hidden="true">verified</span>Gratuito</span>
+                        </div>
+                        <h1 class="pcd-title" id="pcd-heading">Isenção de ICMS para Pessoa com Deficiência (PcD)</h1>
+                        <p class="pcd-subtitle">Serviço de solicitação de isenção do ICMS para pessoa com deficiência física, visual, auditiva, intelectual, múltipla ou com Transtorno do Espectro Autista (TEA) na compra de veículo novo 0km.</p>
+                        <div class="pcd-cta-row">
+                            <a href="https://albertofmorais.github.io/Portal-Atendimento/#isencao-pcd/termo" class="pcd-cta-primary">Iniciar Serviço<span class="material-icons-outlined" aria-hidden="true">chevron_right</span></a>
+                            <span class="pcd-cta-meta"><span class="material-icons-outlined" aria-hidden="true">person</span>1 perfil atendido</span>
+                            <span class="pcd-cta-meta"><span class="material-icons-outlined" aria-hidden="true">description</span>8 documentos</span>
+                            <span class="pcd-cta-meta-light"><span class="material-icons-outlined" aria-hidden="true">language</span>100% online</span>
+                        </div>
+                    </div>
+
+                    <nav class="pcd-band pcd-tabs" aria-label="Seções do serviço">
+                        <a href="#pcd-quem-pode" class="pcd-tab is-active" aria-current="page">Quem pode</a>
+                        <a href="#pcd-documentos" class="pcd-tab">Documentos</a>
+                        <a href="#pcd-pre-requisitos" class="pcd-tab">Pré-requisitos</a>
+                        <a href="#pcd-passo-a-passo" class="pcd-tab">Passo a passo</a>
+                        <a href="#pcd-info" class="pcd-tab">Informações importantes</a>
+                    </nav>
+
+                    <div class="pcd-band pcd-content">
+                        <div id="pcd-quem-pode">
+                            <header class="pcd-section-header">
+                                <h2>Quem pode solicitar?</h2>
+                                <p>Critérios de elegibilidade para este serviço</p>
+                            </header>
+                            <div class="pcd-eligibility-grid">
+                                <article class="pcd-card">
+                                    <span class="pcd-card-icon" aria-hidden="true"><span class="material-icons-outlined">check</span></span>
+                                    <div>
+                                        <h3>Pessoa com deficiência condutora</h3>
+                                        <p>Você tem deficiência física, visual, auditiva, intelectual, múltipla ou TEA e vai comprar e dirigir o próprio veículo.</p>
+                                    </div>
+                                </article>
+                                <article class="pcd-card">
+                                    <span class="pcd-card-icon" aria-hidden="true"><span class="material-icons-outlined">check</span></span>
+                                    <div>
+                                        <h3>Pessoa com deficiência não condutora</h3>
+                                        <p>Você tem deficiência e vai comprar o veículo, mas ele será dirigido por outra pessoa (familiar ou terceiro).</p>
+                                    </div>
+                                </article>
+                                <article class="pcd-card">
+                                    <span class="pcd-card-icon" aria-hidden="true"><span class="material-icons-outlined">check</span></span>
+                                    <div>
+                                        <h3>Representante legal</h3>
+                                        <p>Você é pai, mãe, tutor ou curador e está fazendo o pedido em nome da pessoa com deficiência.</p>
+                                    </div>
+                                </article>
+                            </div>
+                        </div>
+
+                        <div class="pcd-divider" role="presentation"></div>
+
+                        <aside class="pcd-lgpd" aria-labelledby="pcd-lgpd-heading">
+                            <span class="pcd-lgpd-icon" aria-hidden="true"><span class="material-icons-outlined">shield</span></span>
+                            <div>
+                                <h3 id="pcd-lgpd-heading">Proteção de dados (LGPD)</h3>
+                                <p>Seus dados são protegidos pela LGPD (Lei nº 13.709/2018) e serão usados exclusivamente para este serviço.</p>
+                            </div>
+                        </aside>
+                    </div>
+                </section>
+
            </div> </main>
 
       <footer class="portal-footer" role="contentinfo"> <div class="container"> <div class="footer-top-links"> <div class="footer-column"> <h4>Serviços</h4> <ul> <li><a href="https://albertofmorais.github.io/Portal-Atendimento/#servicos-todos">Portal de Serviços</a></li> <li><a href="https://www.mtcidadao.mt.gov.br/" target="_blank">MT Cidadão</a></li> <li><a href="https://albertofmorais.github.io/Portal-Atendimento/#autoatendimento-epac">Autoatendimento e-PAC</a></li> </ul> </div> <div class="footer-column"> <h4>Contatos</h4> <ul> <li><a href="https://albertofmorais.github.io/Portal-Atendimento/#lista-telefones">Lista de Telefones</a></li> <li><a href="https://falabr.cgu.gov.br/" target="_blank">Ouvidoria (Fala.BR)</a></li> <li><a href="https://albertofmorais.github.io/Portal-Atendimento/#fale-conosco">Fale Conosco</a></li> </ul> </div> <div class="footer-column"> <h4>Comunicação</h4> <ul> <li><a href="https://www.sefaz.mt.gov.br/portal/comunicacao/noticias/" target="_blank">Notícias</a></li> <li><a href="https://www.mt.gov.br/radio-paiaguas" target="_blank">Rádio Paiaguás</a></li> <li><a href="https://albertofmorais.github.io/Portal-Atendimento/#" target="_blank">TV Paiaguás</a></li> <li><a href="https://www.flickr.com/photos/governodematogrosso/" target="_blank">Fotos</a></li> </ul> </div> <div class="footer-column"> <h4>Institucional</h4> <ul> <li><a href="https://www5.sefaz.mt.gov.br/" target="_blank">Portal da SEFAZ</a></li> <li><a href="https://www.mt.gov.br/-/-secretarias-do-governo" target="_blank">Secretarias do Governo</a></li> <li><a href="https://albertofmorais.github.io/Portal-Atendimento/#mapa-site">Mapa do Site</a></li> </ul> </div> <div class="footer-column"> <h4>Transparência</h4> <ul> <li><a href="http://www.transparencia.mt.gov.br/" target="_blank">Portal da Transparência</a></li> <li><a href="http://www.transparencia.mt.gov.br/acesso-a-informacao/servico-de-informacao-ao-cidadao-sic-presencial/" target="_blank">Acesso à Informação (SIC)</a></li> </ul> </div> </div> <hr class="footer-divider"> <div class="footer-bottom-content"> <div class="footer-contact-info"> <h4>Contato SEFAZ/MT</h4> <p>Secretaria de Estado de Fazenda - SEFAZ MT<br> Av. Historiador Rubens de Mendonça (Av. do CPA) - Centro Político Administrativo<br> Bloco C - Cuiabá/MT - CEP: 78049-919 </p> </div> <div class="footer-apps-dev"> <div class="app-badges"> <a href="https://albertofmorais.github.io/Portal-Atendimento/#" target="_blank" title="Disponível no Google Play"> <img src="./Portal de Autoatendimento - SEFAZ MT (v37 - Verificação Nav e Gráfico)_files/google-play-badge.png" alt="Disponível no Google Play" loading="lazy"></a> <a href="https://albertofmorais.github.io/Portal-Atendimento/#" target="_blank" title="Disponível na App Store"> <img src="./Portal de Autoatendimento - SEFAZ MT (v37 - Verificação Nav e Gráfico)_files/app-store-badge.png" alt="Disponível na App Store" loading="lazy"></a> </div> <div class="developer-info"> <span>Desenvolvido por</span> <a href="https://www.mti.mt.gov.br/" target="_blank"> <img src="./Portal de Autoatendimento - SEFAZ MT (v37 - Verificação Nav e Gráfico)_files/mti-logo.png" alt="MTI" loading="lazy"> </a> </div> </div> </div> </div> </footer>
