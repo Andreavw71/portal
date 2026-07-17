@@ -1,4 +1,4 @@
-/* VERSAO_CSS_SIMULADOR: 2026-07-17-R67 (títulos à esquerda + nota do campo + responsividade) — confira este carimbo no campo CSS/SCSS da instância após colar */
+/* VERSAO_CSS_SIMULADOR: 2026-07-17-R68 (botao de ajuda menor + hover azul; titulos a esquerda; nota do campo) — confira este carimbo no campo CSS/SCSS da instancia apos colar */
 @import url('https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700;800&display=swap');
 
 .itcd-sim {
@@ -803,3 +803,7 @@
   background: var(--color-primary, #2A66D9); color: #fff; font-size: 12px; font-weight: 700; font-style: italic;
   font-family: Georgia, 'Times New Roman', serif; display: flex; align-items: center; justify-content: center;
 }
+
+/* ===== [NOVO] Botão "?" (tooltip) menor + fundo azul no hover ===== */
+.itcd-sim .tooltip-btn { width: 18px; height: 18px; font-size: 11px; margin-left: 5px; }
+.itcd-sim .tooltip-btn:hover { background: var(--color-primary, #2A66D9); color: #fff; border-color: var(--color-primary, #2A66D9); }

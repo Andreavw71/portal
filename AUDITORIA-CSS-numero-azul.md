@@ -98,7 +98,7 @@ Verificado: **sem rolagem horizontal** a 360/414px; desktop inalterado.
 ## 7. Como aplicar
 
 Arquivo pronto para colar: **`simulador_itcd - CSS-SCSS (corrigido).css`** (neste repositório).
-No Widget Editor do `simulador_itcd` → painel **CSS - SCSS** → **Ctrl+A → colar → Ctrl+S**. Carimbo esperado após colar: `VERSAO_CSS_SIMULADOR: 2026-07-17-R67`.
+No Widget Editor do `simulador_itcd` → painel **CSS - SCSS** → **Ctrl+A → colar → Ctrl+S**. Carimbo esperado após colar: `VERSAO_CSS_SIMULADOR: 2026-07-17-R68`.
 
 ## 8. Observação (risco latente, não é a causa aqui)
 
