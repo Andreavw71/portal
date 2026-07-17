@@ -1,4 +1,4 @@
-/* VERSAO_CSS_SIMULADOR: 2026-07-17-R62 (escala A+/A- uniforme via zoom) — confira este carimbo no campo CSS/SCSS da instância após colar */
+/* VERSAO_CSS_SIMULADOR: 2026-07-17-R63 (escala A+/A- uniforme + responsividade dos cards no celular) — confira este carimbo no campo CSS/SCSS da instância após colar */
 @import url('https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700;800&display=swap');
 
 .itcd-sim {
@@ -747,3 +747,18 @@
 .itcd-sim[data-contrast="high"] .estrela.ativa { color: #7A4B00; }
 
 @media print { .itcd-sim[data-fontsize="-1"], .itcd-sim[data-fontsize="1"], .itcd-sim[data-fontsize="2"] { zoom: 1 !important; } }
+
+/* ===== Responsividade no celular — colocado no fim para vencer as definições-base ===== */
+@media (max-width: 640px) {
+  /* Cabeçalho mais compacto */
+  .itcd-sim .itcd-header { margin-top: 12px; margin-bottom: 20px; gap: var(--space-3); align-items: center; }
+  /* Card "Avalie o Simulador" ocupa a linha inteira */
+  .itcd-sim .header-right .av-card,
+  .itcd-sim .header-right .av-card.expandido { flex: 1 1 100%; width: 100%; min-width: 0; max-width: none; }
+  /* Resumo: mini-cards empilham em coluna, conectores centralizados entre eles */
+  .itcd-sim .resumo-card { padding: 24px 18px 22px; }
+  .itcd-sim .mini-cards { flex-direction: column; flex-wrap: nowrap; align-items: stretch; gap: var(--space-2); margin-bottom: var(--space-4); }
+  .itcd-sim .mini-card { flex: 0 0 auto; width: 100%; padding: 16px 18px; }
+  .itcd-sim .mc-op { align-self: center; margin: 2px 0; }
+  .itcd-sim .mc-op svg { transform: rotate(90deg); } /* seta aponta para baixo entre os cards empilhados */
+}

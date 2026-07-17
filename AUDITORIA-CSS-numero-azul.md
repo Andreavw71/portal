@@ -58,11 +58,26 @@ Elementos de tipos diferentes — `h1` (32px fixo), label (12px fixo), **número
 
 Também verificado: numa coluna de largura fixa (como a do Service Portal) o `zoom` **não** gera barra de rolagem horizontal — o conteúdo reflui dentro da coluna (o widget já tem `overflow-x: hidden`).
 
-## 3. Como aplicar
+## 3. Responsividade dos cards no celular
 
-Arquivo pronto para colar: **`simulador_itcd - CSS-SCSS (corrigido - escala uniforme).css`** (neste repositório).
-No Widget Editor do `simulador_itcd` → painel **CSS - SCSS** → **Ctrl+A → colar → Ctrl+S**. Carimbo esperado após colar: `VERSAO_CSS_SIMULADOR: 2026-07-17-R62`.
+Auditei também o comportamento no celular (render real a 360px e 414px). Dois problemas:
 
-## 4. Observação (risco latente, não é a causa aqui)
+1. **Ordem de origem no CSS derrubava overrides.** Havia um bloco `@media (max-width: 640px)` *antes* das definições-base dos componentes. Como têm a mesma especificidade, a definição-base (mais abaixo no arquivo) vencia — vários ajustes de celular simplesmente não pegavam. Corrigido movendo os ajustes para um bloco `@media` **no fim do arquivo**.
+2. **Conectores dos mini-cards quebravam.** No desktop os 3 cards do resumo formam uma equação horizontal `[Base] → [Imposto] + [Multa]`. No celular eles empilham, mas as setas `→` e `+` ficavam órfãs à direita, com espaço morto.
+
+**Correção (bloco novo no fim, só afeta ≤ 640px):**
+- mini-cards empilham em **coluna, largura total**, com padding menor;
+- os conectores ficam **centralizados entre os cards**, e a seta gira 90° (aponta para baixo ↓), lendo como equação vertical;
+- o card **“Avalie o Simulador”** passa a ocupar a **linha inteira**;
+- cabeçalho mais compacto (menos margem).
+
+Verificado: **sem rolagem horizontal** a 360/414px; o desktop **não muda** (mini-cards continuam em linha). O `zoom` da acessibilidade e a responsividade convivem sem conflito.
+
+## 4. Como aplicar
+
+Arquivo pronto para colar: **`simulador_itcd - CSS-SCSS (corrigido).css`** (neste repositório).
+No Widget Editor do `simulador_itcd` → painel **CSS - SCSS** → **Ctrl+A → colar → Ctrl+S**. Carimbo esperado após colar: `VERSAO_CSS_SIMULADOR: 2026-07-17-R63`.
+
+## 5. Observação (risco latente, não é a causa aqui)
 
 `.tooltip-box`: `max-width: min(300px, 74vw)`. Compiladores SCSS antigos (libsass) tratam `min()`/`max()` como função Sass e podem falhar ao misturar `px`+`vw`. Na sua instância isso compilou (o widget está estilizado), então **não é a causa** — mas se um dia a folha inteira “sumir” após colar, troque por `max-width: 300px`.
