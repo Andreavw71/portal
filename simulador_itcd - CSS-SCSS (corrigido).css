@@ -1,4 +1,4 @@
-/* VERSAO_CSS_SIMULADOR: 2026-07-17-R65 (escala + responsividade + alinhamentos + painel doações) — confira este carimbo no campo CSS/SCSS da instância após colar */
+/* VERSAO_CSS_SIMULADOR: 2026-07-17-R66 (escala + responsividade + alinhamentos + nota do campo) — confira este carimbo no campo CSS/SCSS da instância após colar */
 @import url('https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700;800&display=swap');
 
 .itcd-sim {
@@ -788,3 +788,19 @@
 /* Campo "Quantas doações no ano?" mais estreito e com mais respiro acima/abaixo */
 .itcd-sim .form-group > input.qtd-select { width: 120px; }
 .itcd-sim .form-group:has(.qtd-select) { margin-top: 28px; margin-bottom: 44px; }
+
+/* ===== [NOVO] Nota informativa do campo "Quantas doações" (caixa com ícone) ===== */
+.itcd-sim .form-group:has(.qtd-select) { display: flex; flex-direction: column; align-items: flex-start; }
+.itcd-sim .form-group:has(.qtd-select) > label { order: 1; }
+.itcd-sim .form-group:has(.qtd-select) > .campo-auxiliar { order: 2; }
+.itcd-sim .form-group:has(.qtd-select) > input.qtd-select { order: 3; }
+.itcd-sim .form-group:has(.qtd-select) .campo-auxiliar {
+  margin: 0 0 14px; width: 100%; max-width: 460px; box-sizing: border-box;
+  background: var(--color-primary-tint, #F3F7FE); border: 1px solid #DCE6FB; border-radius: 8px;
+  padding: 11px 14px 11px 42px; position: relative; color: var(--text-body, #4A5565); font-size: 13.5px; line-height: 1.5;
+}
+.itcd-sim .form-group:has(.qtd-select) .campo-auxiliar::before {
+  content: 'i'; position: absolute; left: 13px; top: 11px; width: 19px; height: 19px; border-radius: 50%;
+  background: var(--color-primary, #2A66D9); color: #fff; font-size: 12px; font-weight: 700; font-style: italic;
+  font-family: Georgia, 'Times New Roman', serif; display: flex; align-items: center; justify-content: center;
+}
