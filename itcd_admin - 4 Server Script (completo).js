@@ -104,7 +104,7 @@
       var upf = parseFloat(input.upf);
       var selicRaw = input.selic;
       var selic = (selicRaw === '' || selicRaw === null || selicRaw === undefined) ? null : parseFloat(selicRaw);
-      // [NOVO] SELIC do mês corrente é sempre 1,00 (o simulador não a lê)
+      // SELIC do mês corrente é sempre 1,00 (o simulador não a lê)
       if (mes === gs.nowDateTime().slice(0, 7)) { selic = 1; }
       if (!/^\d{4}-\d{2}$/.test(mes)) { data.msg = 'Mês inválido — use o formato AAAA-MM (ex: 2026-08).'; }
       else if (isNaN(upf)) { data.msg = 'UPF inválida.'; }
@@ -211,7 +211,7 @@
     } catch (e) { data.msg = 'Erro ao remover: ' + e; }
   }
 
-  /* ===== [NOVO] AÇÃO: salvar virada de mês (UPF do mês corrente + SELIC do mês anterior) ===== */
+  /* ===== [NOVO] AÇÃO: salvar virada de mês (UPF mensal do mês corrente + SELIC mensal do mês anterior) — ambos obrigatórios ===== */
   if (data.autenticado && input && input.acao === 'salvarViradaMes') {
     try {
       var vMesCorr = (input.mesCorrente || '').toString().trim();
@@ -219,7 +219,8 @@
       var vUpf = parseFloat(input.upfCorrente);
       var vSelicAnt = (input.selicAnterior === '' || input.selicAnterior === null || input.selicAnterior === undefined) ? null : parseFloat(input.selicAnterior);
       if (!/^\d{4}-\d{2}$/.test(vMesCorr)) { data.msg = 'Mês corrente inválido.'; data.viradaErro = true; }
-      else if (isNaN(vUpf) || vUpf <= 0) { data.msg = 'Informe a UPF do mês corrente (obrigatória).'; data.viradaErro = true; }
+      else if (vSelicAnt === null || isNaN(vSelicAnt)) { data.msg = 'Informe a SELIC mensal do mês anterior.'; data.viradaErro = true; }
+      else if (isNaN(vUpf) || vUpf <= 0) { data.msg = 'Informe a UPF mensal do mês corrente.'; data.viradaErro = true; }
       else {
         var gCorr = new GlideRecord(TB_IDX);
         gCorr.addQuery('u_mes', vMesCorr); gCorr.query();
@@ -236,22 +237,21 @@
           giC.setValue('u_selic', 1);
           giC.insert();
         }
-        if (vSelicAnt !== null && !isNaN(vSelicAnt) && /^\d{4}-\d{2}$/.test(vMesAnt)) {
+        if (/^\d{4}-\d{2}$/.test(vMesAnt)) {
           var gAnt = new GlideRecord(TB_IDX);
           gAnt.addQuery('u_mes', vMesAnt); gAnt.query();
           if (gAnt.next()) { gAnt.setValue('u_selic', vSelicAnt); gAnt.update(); }
         }
-        data.msg = 'Índices atualizados: UPF de ' + vMesCorr + (vSelicAnt !== null ? ' e SELIC de ' + vMesAnt : '') + '.';
+        data.msg = 'Índices atualizados: UPF de ' + vMesCorr + ' e SELIC de ' + vMesAnt + '.';
         data.viradaOk = true;
       }
     } catch (eV) { data.msg = 'Erro ao atualizar virada de mês: ' + eV; data.viradaErro = true; }
   }
 
-  /* ===== [NOVO] Detecção de virada de mês + lançamento automático de SELIC 1,00 ===== */
+  /* ===== [NOVO] Detecção de virada de mês (só dispara quando o mês vira) + SELIC 1,00 no mês corrente ===== */
   data.novoMes = false;
   data.mesCorrente = '';
   data.mesAnterior = '';
-  data.selicAnteriorAtual = null;
   data.upfSugerida = null;
   if (data.autenticado) {
     try {
@@ -273,14 +273,11 @@
         giNew.insert();
         _upfCur = null;
       }
+      // Bloqueia (popup) enquanto a UPF mensal do mês corrente não estiver informada
       data.novoMes = !(_upfCur > 0);
       var gPrev = new GlideRecord(TB_IDX);
       gPrev.addQuery('u_mes', _ymPrev); gPrev.query();
-      if (gPrev.next()) {
-        var _sPrev = gPrev.getValue('u_selic');
-        data.selicAnteriorAtual = (_sPrev === '' || _sPrev === null) ? null : (parseFloat(_sPrev) || 0);
-        data.upfSugerida = parseFloat(gPrev.getValue('u_valor')) || null;
-      }
+      if (gPrev.next()) { data.upfSugerida = parseFloat(gPrev.getValue('u_valor')) || null; }
     } catch (eR) {}
   }
 

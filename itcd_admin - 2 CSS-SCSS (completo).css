@@ -209,14 +209,13 @@
   .itcd-admin.guia-ativa .guia-doc { border: none; padding: 0; }
 }
 
-/* ===== [NOVO] Popup de virada de mês (índices) ===== */
+/* ===== Popup de virada de mês (bloqueante) ===== */
 .itcd-admin .itcd-modal-overlay { position: fixed; inset: 0; background: rgba(16,24,40,.55); display: flex; align-items: center; justify-content: center; z-index: 1000; padding: 16px; box-sizing: border-box; }
 .itcd-admin .itcd-modal { background: #fff; border-radius: 12px; max-width: 460px; width: 100%; padding: 26px 26px 20px; box-shadow: 0 16px 48px rgba(16,24,40,.28); box-sizing: border-box; }
 .itcd-admin .mv-icone { width: 48px; height: 48px; border-radius: 50%; background: #F3F7FE; display: flex; align-items: center; justify-content: center; margin-bottom: 14px; }
 .itcd-admin .mv-icone svg { width: 26px; height: 26px; stroke: #2A66D9; fill: none; stroke-width: 1.8; stroke-linecap: round; stroke-linejoin: round; }
 .itcd-admin .itcd-modal h3 { margin: 0 0 6px; font-size: 20px; font-weight: 700; color: #101828; }
 .itcd-admin .mv-texto { margin: 0 0 18px; font-size: 15px; line-height: 1.5; color: #4A5565; }
-.itcd-admin .mv-texto strong { color: #2A66D9; }
 .itcd-admin .mv-campo { margin-bottom: 16px; }
 .itcd-admin .mv-campo label { display: block; font-size: 14px; font-weight: 600; color: #364153; margin-bottom: 6px; }
 .itcd-admin .mv-req { color: #DC2626; }
@@ -224,9 +223,8 @@
 .itcd-admin .mv-campo input:focus { border-color: #2A66D9; box-shadow: 0 0 0 3px rgba(42,102,217,.18); }
 .itcd-admin .mv-hint { display: block; margin-top: 5px; font-size: 12.5px; color: #6A7282; line-height: 1.45; }
 .itcd-admin .mv-msg { margin: 0 0 12px; font-size: 13.5px; font-weight: 600; color: #B91C1C; }
-.itcd-admin .mv-acoes { display: flex; gap: 10px; align-items: center; margin-top: 4px; }
+.itcd-admin .mv-acoes { display: flex; margin-top: 4px; }
 .itcd-admin .mv-salvar { flex: 1; }
-.itcd-admin .mv-adiar { height: 44px; padding: 0 16px; background: #fff; color: #4A5565; border: 1px solid #D1D5DC; border-radius: 8px; font-size: 15px; font-weight: 600; cursor: pointer; }
 .itcd-admin .mv-nota { margin: 14px 0 0; font-size: 12px; color: #6A7282; line-height: 1.45; }
 /* Campo SELIC do mês corrente bloqueado no formulário de índices */
 .itcd-admin .af-fixo { height: 42px; display: flex; align-items: center; gap: 8px; padding: 0 12px; box-sizing: border-box; background: #F3F4F6; border: 1px dashed #D1D5DC; border-radius: 8px; color: #6A7282; font-size: 15px; font-weight: 700; }

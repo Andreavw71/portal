@@ -25,28 +25,26 @@
   <!-- Painel -->
   <div ng-if="c.data.autenticado">
 
-    <!-- ===== [NOVO] POPUP: virada de mês (atualização de índices) ===== -->
+    <!-- ===== POPUP: virada de mês — BLOQUEIA o painel até salvar os dois índices ===== -->
     <div class="itcd-modal-overlay" ng-if="c.popupVirada">
       <div class="itcd-modal" role="dialog" aria-modal="true" aria-labelledby="mv-titulo">
         <div class="mv-icone" aria-hidden="true"><svg viewBox="0 0 24 24"><rect x="3" y="4" width="18" height="18" rx="2"></rect><line x1="16" y1="2" x2="16" y2="6"></line><line x1="8" y1="2" x2="8" y2="6"></line><line x1="3" y1="10" x2="21" y2="10"></line></svg></div>
         <h3 id="mv-titulo">Novo mês detectado: {{c.data.mesCorrente}}</h3>
-        <p class="mv-texto">Lancei <strong>SELIC 1,00</strong> (provisória) para o mês corrente. Para manter os cálculos corretos, atualize os índices abaixo:</p>
+        <p class="mv-texto">Para manter os cálculos corretos, informe os índices mensais abaixo:</p>
         <div class="mv-campo">
-          <label>SELIC consolidada de {{c.data.mesAnterior}} (%)</label>
+          <label>SELIC Mensal de {{c.data.mesAnterior}} (%) <span class="mv-req">*</span></label>
           <input type="number" step="0.01" ng-model="c.virada.selic" placeholder="Ex: 1.10">
-          <span class="mv-hint">Substitua o 1,00 provisório pelo valor real do Sicalc do mês anterior.</span>
         </div>
         <div class="mv-campo">
-          <label>UPF de {{c.data.mesCorrente}} (R$) <span class="mv-req">*</span></label>
+          <label>UPF Mensal de {{c.data.mesCorrente}} (R$) <span class="mv-req">*</span></label>
           <input type="number" step="0.01" ng-model="c.virada.upf" placeholder="Ex: 265.00" ng-keyup="$event.keyCode === 13 && c.salvarViradaMes()">
           <span class="mv-hint" ng-if="c.data.upfSugerida">UPF do mês anterior: R$ {{c.fmt(c.data.upfSugerida)}} (repita se não houver reajuste anual).</span>
         </div>
         <div class="mv-msg" ng-if="c.viradaMsg" role="alert">{{c.viradaMsg}}</div>
         <div class="mv-acoes">
-          <button class="btn-adm mv-salvar" ng-click="c.salvarViradaMes()">Salvar</button>
-          <button class="mv-adiar" ng-click="c.adiarVirada()">Adiar</button>
+          <button class="btn-adm mv-salvar" ng-click="c.salvarViradaMes()">Salvar e continuar</button>
         </div>
-        <p class="mv-nota">Enquanto a UPF do mês corrente não for informada, este aviso reaparecerá ao abrir o painel.</p>
+        <p class="mv-nota">Enquanto os índices não forem informados, o Painel permanece bloqueado.</p>
       </div>
     </div>
 

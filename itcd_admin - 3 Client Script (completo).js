@@ -151,27 +151,29 @@ api.controller = function() {
     } catch (e) { return ''; }
   };
 
-  /* ===== [NOVO] Virada de mês: popup de atualização de índices ===== */
+  /* ===== [NOVO] Virada de mês: popup bloqueante (SELIC mensal anterior + UPF mensal corrente) ===== */
   c.popupVirada = false;
   c.viradaMsg = '';
   c.virada = { upf: null, selic: null };
   c.syncVirada = function() {
     c.popupVirada = !!(c.data && c.data.novoMes);
     c.viradaMsg = '';
-    c.virada = { upf: null, selic: (c.data && c.data.selicAnteriorAtual != null) ? c.data.selicAnteriorAtual : null };
+    c.virada = { upf: null, selic: null };
   };
   c.salvarViradaMes = function() {
     c.viradaMsg = '';
-    if (!c.virada.upf || parseFloat(c.virada.upf) <= 0) { c.viradaMsg = 'Informe a UPF do mês corrente.'; return; }
+    var sel = (c.virada.selic === '' || c.virada.selic === null || c.virada.selic === undefined) ? NaN : parseFloat(c.virada.selic);
+    var upf = parseFloat(c.virada.upf);
+    if (isNaN(sel)) { c.viradaMsg = 'Informe a SELIC mensal do mês anterior.'; return; }
+    if (isNaN(upf) || upf <= 0) { c.viradaMsg = 'Informe a UPF mensal do mês corrente.'; return; }
     c.data.acao = 'salvarViradaMes';
     c.data.senha = c.senha;
     c.data.upfCorrente = c.virada.upf;
-    c.data.selicAnterior = (c.virada.selic === '' || c.virada.selic === undefined) ? null : c.virada.selic;
+    c.data.selicAnterior = c.virada.selic;
     c.server.update().then(function() {
       if (c.data.viradaOk) { c.popupVirada = false; }
       else if (c.data.viradaErro && c.data.msg) { c.viradaMsg = c.data.msg; }
     });
   };
-  c.adiarVirada = function() { c.popupVirada = false; };
   c.syncVirada();
 };
