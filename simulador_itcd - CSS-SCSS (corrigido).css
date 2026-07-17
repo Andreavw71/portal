@@ -1,4 +1,4 @@
-/* VERSAO_CSS_SIMULADOR: 2026-07-17-R64 (escala A+/A- + responsividade + alinhamentos) — confira este carimbo no campo CSS/SCSS da instância após colar */
+/* VERSAO_CSS_SIMULADOR: 2026-07-17-R65 (escala + responsividade + alinhamentos + painel doações) — confira este carimbo no campo CSS/SCSS da instância após colar */
 @import url('https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700;800&display=swap');
 
 .itcd-sim {
@@ -399,7 +399,7 @@
 
 
 /* ============ AVISO: REGRA DE DOAÇÕES SUCESSIVAS (faixa de largura total) ============ */
-.itcd-sim .regra-sucessiva { margin: var(--space-4) auto 0; max-width: 480px; border: 1px solid var(--status-info-border); border-radius: var(--radius-sm); overflow: hidden; background: #fff; }
+.itcd-sim .regra-sucessiva { margin: var(--space-2) 0 var(--space-5); border: 1px solid var(--status-info-border); border-radius: var(--radius-sm); overflow: hidden; background: #fff; }
 .itcd-sim .indicador-sucessiva { list-style: none; display: flex; align-items: center; gap: 7px; width: 100%; box-sizing: border-box; min-height: 46px; padding: 10px 18px; background: transparent; cursor: pointer; font-size: var(--fs-p65); font-weight: var(--w-semibold); color: var(--color-primary); user-select: none; font-family: var(--font-sans); }
 .itcd-sim .indicador-sucessiva::-webkit-details-marker { display: none; }
 .itcd-sim .indicador-sucessiva:hover { background: transparent; }
@@ -784,3 +784,7 @@
   .itcd-sim .br-tabs { gap: 4px; padding: 0 8px; }
   .itcd-sim .br-tabs button { font-size: 13px; padding: 8px 10px; line-height: 1.25; flex: 1 1 0; }
 }
+
+/* Campo "Quantas doações no ano?" mais estreito e com mais respiro acima/abaixo */
+.itcd-sim .form-group > input.qtd-select { width: 120px; }
+.itcd-sim .form-group:has(.qtd-select) { margin-top: 28px; margin-bottom: 44px; }

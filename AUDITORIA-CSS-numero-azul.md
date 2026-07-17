@@ -88,11 +88,17 @@ Três ajustes pedidos, todos verificados por render real:
 
 Verificado: **sem rolagem horizontal** a 360/414px; desktop inalterado.
 
-## 6. Como aplicar
+## 6. Painel “Várias doações” e campo “Quantas doações”
+
+- **Painel “Várias doações no mesmo ano”** (`.regra-sucessiva`) passou a usar **as mesmas margens do painel “Antes de começar”** (`.como-funciona`): `margin: var(--space-2) 0 var(--space-5)` e **sem** `max-width: 480px` — deixa de ficar centralizado e estreito, alinhando com o restante.
+- **Campo “Quantas doações no ano?”** (`.qtd-select`): largura reduzida de 240px → **120px**. *Detalhe de cascata:* a largura vinha da regra genérica `.form-group > input` (240px, especificidade 0-2-1), que vencia `.qtd-select` (0-2-0) — por isso o override precisou ser `.form-group > input.qtd-select`.
+- **Respiro do bloco**: o `form-group` desse campo ganhou `margin-top: 28px` (antes 0, colado na faixa da etapa) e `margin-bottom: 44px` (antes 32px), aumentando a distância dos blocos anterior e posterior. Alvo isolado via `.form-group:has(.qtd-select)`.
+
+## 7. Como aplicar
 
 Arquivo pronto para colar: **`simulador_itcd - CSS-SCSS (corrigido).css`** (neste repositório).
-No Widget Editor do `simulador_itcd` → painel **CSS - SCSS** → **Ctrl+A → colar → Ctrl+S**. Carimbo esperado após colar: `VERSAO_CSS_SIMULADOR: 2026-07-17-R64`.
+No Widget Editor do `simulador_itcd` → painel **CSS - SCSS** → **Ctrl+A → colar → Ctrl+S**. Carimbo esperado após colar: `VERSAO_CSS_SIMULADOR: 2026-07-17-R65`.
 
-## 7. Observação (risco latente, não é a causa aqui)
+## 8. Observação (risco latente, não é a causa aqui)
 
 `.tooltip-box`: `max-width: min(300px, 74vw)`. Compiladores SCSS antigos (libsass) tratam `min()`/`max()` como função Sass e podem falhar ao misturar `px`+`vw`. Na sua instância isso compilou (o widget está estilizado), então **não é a causa** — mas se um dia a folha inteira “sumir” após colar, troque por `max-width: 300px`.
