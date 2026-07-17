@@ -1,86 +1,68 @@
-# Auditoria CSS — “o número em azul não aumenta” (Widget `simulador_itcd`, ServiceNow)
+# Auditoria CSS — escala A+/A- “irregular” (Widget `simulador_itcd`, ServiceNow)
 
-**Elemento:** `.rh-valor` — o total em azul (`R$ 34.133,44`) no card **TOTAL A RECOLHER · ESTIMATIVA**.
-**Sintoma:** ao usar os botões de acessibilidade **+A / -A**, o resto do texto muda de tamanho, mas o número azul continua igual.
-
----
-
-## 1. O que foi verificado
-
-As regras atuais do número azul (bloco *Hero do total* do CSS do simulador):
-
-```css
-.itcd-sim .rh-valor { font-size: 36px !important; font-weight: 800 !important; color: var(--color-primary, #2A66D9) !important; line-height: 1.2 !important; }
-.itcd-sim[data-fontsize="1"] .rh-valor { font-size: 42px !important; }
-.itcd-sim[data-fontsize="2"] .rh-valor { font-size: 48px !important; }
-```
-
-Testado num navegador real (medindo o `font-size` computado ao alternar `data-fontsize`):
-
-| `data-fontsize` | `.rh-valor` |
-|---|---|
-| (nenhum) | 36px |
-| `-1`      | 36px  ← **não diminui** |
-| `1`       | 42px |
-| `2`       | 48px |
-
-**Conclusão:** o bloco de regras está correto num navegador comum — o número *cresce* para 42/48px. Portanto o defeito **não** é a cor nem o `!important`.
-
-## 2. Causa-raiz
-
-O número azul é **o único texto escalável que NÃO usa o sistema de variáveis de fonte** do widget.
-
-- Todo o resto do texto escala por **custom properties herdadas** (`--text-*`, `--fs-*`), redefinidas em
-  `.itcd-sim[data-fontsize="-1|1|2"] { --text-base: …; … }`. Como as variáveis são declaradas em `.itcd-sim` e **herdam para todos os descendentes**, basta o atributo `data-fontsize` existir no elemento raiz para tudo re-resolver.
-- O `.rh-valor` depende de **duas regras especiais com combinador descendente** (`.itcd-sim[data-fontsize="1"] .rh-valor`), separadas do sistema de variáveis.
-
-Isso cria exatamente o sintoma relatado: **se, no build do ServiceNow, essas duas linhas especiais faltarem, se perderem no Ctrl+A→colar, ou forem de uma versão anterior — enquanto os blocos de variáveis continuam intactos — todo o texto cresce e só o número azul fica travado em 36px.** É o caso mais provável de divergência entre o HTML avulso (que funciona) e o widget no ServiceNow.
-
-Problema secundário confirmado no teste: no nível `-1` o número **não diminui** (não há regra para `-1`), ficando inconsistente com o resto.
-
-## 3. Correção (acoplar o número ao mesmo sistema de variáveis)
-
-A correção elimina a fragilidade: o número passa a escalar pela **mesma variável herdada** que todo o resto. Se qualquer texto crescer no ServiceNow, o número cresce junto.
-
-**a) No bloco base de tipografia `.itcd-sim { … }`** (linha do `--text-3xl`), adicionar o token:
-
-```css
---text-3xl: 35px; --fs-total: 36px;
-```
-
-**b) No bloco *Hero do total*** — trocar o valor fixo por variável e **remover** as duas regras especiais:
-
-```css
-/* ANTES */
-.itcd-sim .rh-valor { font-size: 36px !important; font-weight: 800 !important; color: var(--color-primary, #2A66D9) !important; line-height: 1.2 !important; }
-.itcd-sim[data-fontsize="1"] .rh-valor { font-size: 42px !important; }
-.itcd-sim[data-fontsize="2"] .rh-valor { font-size: 48px !important; }
-
-/* DEPOIS */
-.itcd-sim .rh-valor { font-size: var(--fs-total, 36px) !important; font-weight: 800 !important; color: var(--color-primary, #2A66D9) !important; line-height: 1.2 !important; }
-```
-
-**c) Nos três blocos de nível de fonte** (`/* ===== Níveis de tamanho de texto ===== */`), adicionar `--fs-total` no início de cada um:
-
-```css
-.itcd-sim[data-fontsize="-1"] { --fs-total: 32px; --text-xs: 15px; … }
-.itcd-sim[data-fontsize="1"]  { --fs-total: 42px; --text-xs: 18px; … }
-.itcd-sim[data-fontsize="2"]  { --fs-total: 48px; --text-xs: 19px; … }
-```
-
-### Resultado após a correção (medido no navegador)
-
-| `data-fontsize` | `.rh-valor` |
-|---|---|
-| (nenhum) | 36px |
-| `-1`      | **32px** (agora diminui) |
-| `1`       | 42px |
-| `2`       | 48px |
-
-## 4. Observação adicional (risco latente, não é a causa aqui)
-
-Linha da `.tooltip-box`: `max-width: min(300px, 74vw)`. Compiladores SCSS antigos (libsass) tratam `min()`/`max()` como funções Sass e podem falhar ao misturar unidades (`px` + `vw`). No ServiceNow atual isso compilou (o widget está estilizado na tela), então **não é a causa** do número não crescer — mas, se um dia a folha inteira “sumir” após colar, troque por um valor fixo (ex.: `max-width: 300px`) para eliminar o risco.
+**Sintoma relatado:** ao usar **+A / −A**, *alguns* textos aumentam (inclusive parte das letras azuis) e outros não. Fica **irregular**. O número azul `.rh-valor` (TOTAL A RECOLHER) é um dos que não mexem.
 
 ---
 
-**Como aplicar:** no Widget Editor do `simulador_itcd`, painel **CSS - SCSS**, aplicar as 3 edições acima → **Ctrl+S**. Não muda HTML, Client nem Server.
+## 1. Causa-raiz (medida no código)
+
+O CSS do widget **mistura dois sistemas de tamanho de fonte**:
+
+| Como o tamanho é definido | Qtde de regras | Escala com A+/A-? |
+|---|---:|---|
+| `font-size: var(--text-* / --fs-*)` (tokens) | **57** | ✅ sim |
+| `font-size: NNpx` (valor fixo no código) | **65** | ❌ **não** |
+
+O botão **+A/−A** só troca o atributo `data-fontsize`, que redefine os **tokens** (`--text-*`). Logo, **apenas os ~57 textos que usam token crescem**; os ~65 com `px` fixo (h1 32px, labels, mini-cards, tooltips, estrelas e o número azul `36px`) ficam parados. Daí a impressão de “irregular”: metade escala, metade não — e algumas letras azuis usam token (escalam) enquanto o número azul usa `px` fixo (não escala).
+
+Confirmado num navegador real: no CSS original, todo elemento com `px` fixo mantém proporção **1.000** em todos os níveis, enquanto os de token crescem.
+
+> Observação: o `.rh-valor` até tinha 2 regras especiais (`[data-fontsize="1"|"2"]`) para crescer, mas nada para o nível `−1`, e ainda assim dependia do mesmo gatilho — era um remendo isolado, não a correção do problema de fundo.
+
+## 2. Correção aplicada — uma escala única para tudo
+
+Em vez de caçar e converter 65 valores `px` um a um (frágil, muda o visual no nível 0 e ainda deixa o crescimento desigual porque os tokens têm razões diferentes entre si), a correção aplica **um único fator de escala no widget inteiro via `zoom`** — técnica que **este mesmo CSS já usa** (a impressão usa `zoom: 0.65`). Assim **100% do texto** (token ou `px`) cresce/diminui pela **mesma proporção**.
+
+**Diff (3 blocos alterados, no painel CSS - SCSS):**
+
+```css
+/* (a) REMOVER os dois remendos do número azul: */
+- .itcd-sim[data-fontsize="1"] .rh-valor { font-size: 42px !important; }
+- .itcd-sim[data-fontsize="2"] .rh-valor { font-size: 48px !important; }
+
+/* (b) SUBSTITUIR os três blocos que só reescalavam os tokens: */
+- .itcd-sim[data-fontsize="-1"] { --text-xs: 15px; ... --fs-p65: 21.5px; }
+- .itcd-sim[data-fontsize="1"]  { --text-xs: 18px; ... --fs-p65: 24.5px; }
+- .itcd-sim[data-fontsize="2"]  { --text-xs: 19px; ... --fs-p65: 25.5px; }
+/* por uma escala global: */
++ .itcd-sim[data-fontsize="-1"] { zoom: 0.9; }
++ .itcd-sim[data-fontsize="1"]  { zoom: 1.12; }
++ .itcd-sim[data-fontsize="2"]  { zoom: 1.24; }
+
+/* (c) ADICIONAR no fim, para a impressão não somar as duas escalas: */
++ @media print { .itcd-sim[data-fontsize="-1"], .itcd-sim[data-fontsize="1"], .itcd-sim[data-fontsize="2"] { zoom: 1 !important; } }
+```
+
+Nada muda no HTML, Client ou Server. Os tokens continuam existindo com os valores do nível 0, então **o visual padrão (sem A+/A-) fica idêntico** ao atual.
+
+### Verificação no navegador (proporção da altura renderizada vs. nível 0)
+
+Elementos de tipos diferentes — `h1` (32px fixo), label (12px fixo), **número azul** (36px fixo), mini-card (16px fixo) e botão (token) — todos passam a escalar **juntos**:
+
+| Nível | h1 | label | nº azul | mini-card | botão |
+|---|---|---|---|---|---|
+| −1 | 0.91 | 0.90 | 0.90 | 0.90 | 0.90 |
+| 0  | 1.00 | 1.00 | 1.00 | 1.00 | 1.00 |
+| +1 | 1.13 | 1.12 | 1.12 | 1.12 | 1.12 |
+| +2 | 1.24 | 1.24 | 1.24 | 1.24 | 1.24 |
+
+Também verificado: numa coluna de largura fixa (como a do Service Portal) o `zoom` **não** gera barra de rolagem horizontal — o conteúdo reflui dentro da coluna (o widget já tem `overflow-x: hidden`).
+
+## 3. Como aplicar
+
+Arquivo pronto para colar: **`simulador_itcd - CSS-SCSS (corrigido - escala uniforme).css`** (neste repositório).
+No Widget Editor do `simulador_itcd` → painel **CSS - SCSS** → **Ctrl+A → colar → Ctrl+S**. Carimbo esperado após colar: `VERSAO_CSS_SIMULADOR: 2026-07-17-R62`.
+
+## 4. Observação (risco latente, não é a causa aqui)
+
+`.tooltip-box`: `max-width: min(300px, 74vw)`. Compiladores SCSS antigos (libsass) tratam `min()`/`max()` como função Sass e podem falhar ao misturar `px`+`vw`. Na sua instância isso compilou (o widget está estilizado), então **não é a causa** — mas se um dia a folha inteira “sumir” após colar, troque por `max-width: 300px`.
