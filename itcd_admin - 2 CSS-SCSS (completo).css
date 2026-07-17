@@ -218,6 +218,7 @@
 .itcd-admin .mv-texto { margin: 0 0 18px; font-size: 15px; line-height: 1.5; color: #4A5565; }
 .itcd-admin .mv-campo { margin-bottom: 16px; }
 .itcd-admin .mv-campo label { display: block; font-size: 14px; font-weight: 600; color: #364153; margin-bottom: 6px; }
+.itcd-admin .mv-mes { display: inline-block; margin-bottom: 8px; padding: 3px 12px; background: #F3F7FE; border: 1px solid #DCE6FB; border-radius: 999px; font-size: 13px; font-weight: 700; color: #2A66D9; letter-spacing: .02em; }
 .itcd-admin .mv-req { color: #DC2626; }
 .itcd-admin .mv-campo input { width: 100%; box-sizing: border-box; height: 44px; padding: 0 14px; font-size: 16px; color: #101828; border: 1px solid #D1D5DC; border-radius: 8px; outline: none; }
 .itcd-admin .mv-campo input:focus { border-color: #2A66D9; box-shadow: 0 0 0 3px rgba(42,102,217,.18); }

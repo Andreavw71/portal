@@ -9,6 +9,8 @@ Enquanto os dois não forem salvos, **o painel permanece bloqueado**. A SELIC do
 
 > Exemplo: como a UPF é **mensal**, em julho o popup **não** abre (julho já tem UPF). No **1º de agosto** ele abre pedindo **SELIC mensal de julho** + **UPF de agosto**.
 
+> **Correção importante:** a detecção do mês usa `new GlideDate().getValue()` (formato ISO `AAAA-MM-DD`, independe do idioma). Usar `gs.nowDateTime()` retornava a data no formato do usuário (pt-BR → `DD/MM/AAAA`), o `slice(0,7)` virava lixo e o popup abria **indevidamente** mesmo com os índices em dia.
+
 ## Como aplicar (recomendado: arquivos completos)
 Os 4 blocos já vêm prontos neste repositório — **Ctrl+A → colar** em cada painel do Widget Editor do `itcd_admin`:
 
@@ -79,7 +81,7 @@ data.mesAnterior = '';
 data.upfSugerida = null;
 if (data.autenticado) {
   try {
-    var _ym = gs.nowDateTime().slice(0, 7);
+    var _ym = new GlideDate().getValue().slice(0, 7);
     var _y = parseInt(_ym.slice(0, 4), 10), _m = parseInt(_ym.slice(5, 7), 10);
     var _pm = _m - 1, _py = _y; if (_pm < 1) { _pm = 12; _py -= 1; }
     var _ymPrev = _py + '-' + (_pm < 10 ? '0' + _pm : '' + _pm);
@@ -110,7 +112,7 @@ if (data.autenticado) {
 
 ```javascript
       // SELIC do mês corrente é sempre 1,00 (o simulador não a lê)
-      if (mes === gs.nowDateTime().slice(0, 7)) { selic = 1; }
+      if (mes === new GlideDate().getValue().slice(0, 7)) { selic = 1; }
 ```
 
 ---
@@ -164,14 +166,16 @@ if (data.autenticado) {
     <div class="itcd-modal-overlay" ng-if="c.popupVirada">
       <div class="itcd-modal" role="dialog" aria-modal="true" aria-labelledby="mv-titulo">
         <div class="mv-icone" aria-hidden="true"><svg viewBox="0 0 24 24"><rect x="3" y="4" width="18" height="18" rx="2"></rect><line x1="16" y1="2" x2="16" y2="6"></line><line x1="8" y1="2" x2="8" y2="6"></line><line x1="3" y1="10" x2="21" y2="10"></line></svg></div>
-        <h3 id="mv-titulo">Novo mês detectado: {{c.data.mesCorrente}}</h3>
+        <h3 id="mv-titulo">Novo mês detectado</h3>
         <p class="mv-texto">Para manter os cálculos corretos, informe os índices mensais abaixo:</p>
         <div class="mv-campo">
-          <label>SELIC Mensal de {{c.data.mesAnterior}} (%) <span class="mv-req">*</span></label>
+          <label>SELIC Mensal (%) <span class="mv-req">*</span></label>
+          <div class="mv-mes">{{c.data.mesAnterior}}</div>
           <input type="number" step="0.01" ng-model="c.virada.selic" placeholder="Ex: 1.10">
         </div>
         <div class="mv-campo">
-          <label>UPF Mensal de {{c.data.mesCorrente}} (R$) <span class="mv-req">*</span></label>
+          <label>UPF Mensal (R$) <span class="mv-req">*</span></label>
+          <div class="mv-mes">{{c.data.mesCorrente}}</div>
           <input type="number" step="0.01" ng-model="c.virada.upf" placeholder="Ex: 265.00" ng-keyup="$event.keyCode === 13 && c.salvarViradaMes()">
           <span class="mv-hint" ng-if="c.data.upfSugerida">UPF do mês anterior: R$ {{c.fmt(c.data.upfSugerida)}} (repita se não houver reajuste anual).</span>
         </div>

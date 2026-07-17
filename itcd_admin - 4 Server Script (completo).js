@@ -105,7 +105,7 @@
       var selicRaw = input.selic;
       var selic = (selicRaw === '' || selicRaw === null || selicRaw === undefined) ? null : parseFloat(selicRaw);
       // SELIC do mês corrente é sempre 1,00 (o simulador não a lê)
-      if (mes === gs.nowDateTime().slice(0, 7)) { selic = 1; }
+      if (mes === new GlideDate().getValue().slice(0, 7)) { selic = 1; }
       if (!/^\d{4}-\d{2}$/.test(mes)) { data.msg = 'Mês inválido — use o formato AAAA-MM (ex: 2026-08).'; }
       else if (isNaN(upf)) { data.msg = 'UPF inválida.'; }
       else {
@@ -211,7 +211,7 @@
     } catch (e) { data.msg = 'Erro ao remover: ' + e; }
   }
 
-  /* ===== [NOVO] AÇÃO: salvar virada de mês (UPF mensal do mês corrente + SELIC mensal do mês anterior) — ambos obrigatórios ===== */
+  /* AÇÃO: salvar virada de mês (UPF mensal do corrente + SELIC mensal do anterior) — ambos obrigatórios */
   if (data.autenticado && input && input.acao === 'salvarViradaMes') {
     try {
       var vMesCorr = (input.mesCorrente || '').toString().trim();
@@ -248,14 +248,14 @@
     } catch (eV) { data.msg = 'Erro ao atualizar virada de mês: ' + eV; data.viradaErro = true; }
   }
 
-  /* ===== [NOVO] Detecção de virada de mês (só dispara quando o mês vira) + SELIC 1,00 no mês corrente ===== */
+  /* Detecção de virada de mês (mês atual em formato ISO confiável) + SELIC 1,00 no mês corrente */
   data.novoMes = false;
   data.mesCorrente = '';
   data.mesAnterior = '';
   data.upfSugerida = null;
   if (data.autenticado) {
     try {
-      var _ym = gs.nowDateTime().slice(0, 7);
+      var _ym = new GlideDate().getValue().slice(0, 7);   // AAAA-MM (sempre ISO, independe do locale)
       var _y = parseInt(_ym.slice(0, 4), 10), _m = parseInt(_ym.slice(5, 7), 10);
       var _pm = _m - 1, _py = _y; if (_pm < 1) { _pm = 12; _py -= 1; }
       var _ymPrev = _py + '-' + (_pm < 10 ? '0' + _pm : '' + _pm);
@@ -273,7 +273,7 @@
         giNew.insert();
         _upfCur = null;
       }
-      // Bloqueia (popup) enquanto a UPF mensal do mês corrente não estiver informada
+      // Bloqueia (popup) só quando a UPF mensal do mês corrente ainda não estiver informada
       data.novoMes = !(_upfCur > 0);
       var gPrev = new GlideRecord(TB_IDX);
       gPrev.addQuery('u_mes', _ymPrev); gPrev.query();

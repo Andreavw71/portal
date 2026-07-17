@@ -151,7 +151,7 @@ api.controller = function() {
     } catch (e) { return ''; }
   };
 
-  /* ===== [NOVO] Virada de mês: popup bloqueante (SELIC mensal anterior + UPF mensal corrente) ===== */
+  /* Virada de mês: popup bloqueante (SELIC mensal anterior + UPF mensal corrente) */
   c.popupVirada = false;
   c.viradaMsg = '';
   c.virada = { upf: null, selic: null };
