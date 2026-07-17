@@ -1,4 +1,4 @@
-/* VERSAO_CSS_SIMULADOR: 2026-07-17-R66 (escala + responsividade + alinhamentos + nota do campo) — confira este carimbo no campo CSS/SCSS da instância após colar */
+/* VERSAO_CSS_SIMULADOR: 2026-07-17-R67 (títulos à esquerda + nota do campo + responsividade) — confira este carimbo no campo CSS/SCSS da instância após colar */
 @import url('https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700;800&display=swap');
 
 .itcd-sim {
@@ -764,8 +764,7 @@
 }
 
 /* ===== Ajustes de alinhamento (2026-07-17) ===== */
-/* (b) Cabeçalho de etapa (1 e 2) centralizado nos cards de entrada */
-.itcd-sim .card-etapa { justify-content: center; text-align: center; }
+/* (b) Cabeçalho de etapa (1 e 2): alinhado à esquerda (padrão do widget) */
 /* (c) Botão "Simular imposto" centralizado */
 .itcd-sim .area-acoes.acoes-linha { justify-content: center; }
 /* (a) Estado vazio desce para o ícone alinhar com o centro do card "Herança" (só no desktop, 2 colunas) */

@@ -77,7 +77,8 @@ Verificado: **sem rolagem horizontal** a 360/414px; o desktop **não muda** (min
 
 Três ajustes pedidos, todos verificados por render real:
 - **(a)** O estado vazio (“Sua simulação aparecerá aqui”) desce para o **ícone ficar alinhado ao centro do card “Herança”** da 1ª coluna (`.empty-state { margin-top: 71px }`; medido: ícone e centro do card na mesma linha, delta 0px). Só afeta o desktop (2 colunas).
-- **(b)** Os cabeçalhos de etapa **1** e **2** dos cards de entrada ficam **centralizados** (`.card-etapa { justify-content: center; text-align: center }`).
+- **(b)** Os cabeçalhos de etapa **1** e **2** dos cards de entrada ficam **alinhados à esquerda** (padrão do widget). *(Foram centralizados numa versão anterior e revertidos a pedido — R67.)*
+- **Nota do campo “Quantas doações”**: o texto auxiliar virou uma **caixa azul clara com ícone ⓘ**, abaixo do rótulo e acima do campo (escopo `:has(.qtd-select)`, sem afetar os demais textos de ajuda).
 - **(c)** O botão **Simular imposto** fica **centralizado** (`.area-acoes.acoes-linha { justify-content: center }`).
 
 ## 5. Responsividade — demais seções no celular
@@ -97,7 +98,7 @@ Verificado: **sem rolagem horizontal** a 360/414px; desktop inalterado.
 ## 7. Como aplicar
 
 Arquivo pronto para colar: **`simulador_itcd - CSS-SCSS (corrigido).css`** (neste repositório).
-No Widget Editor do `simulador_itcd` → painel **CSS - SCSS** → **Ctrl+A → colar → Ctrl+S**. Carimbo esperado após colar: `VERSAO_CSS_SIMULADOR: 2026-07-17-R65`.
+No Widget Editor do `simulador_itcd` → painel **CSS - SCSS** → **Ctrl+A → colar → Ctrl+S**. Carimbo esperado após colar: `VERSAO_CSS_SIMULADOR: 2026-07-17-R67`.
 
 ## 8. Observação (risco latente, não é a causa aqui)
 
