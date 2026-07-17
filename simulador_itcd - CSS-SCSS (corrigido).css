@@ -1,4 +1,4 @@
-/* VERSAO_CSS_SIMULADOR: 2026-07-17-R63 (escala A+/A- uniforme + responsividade dos cards no celular) — confira este carimbo no campo CSS/SCSS da instância após colar */
+/* VERSAO_CSS_SIMULADOR: 2026-07-17-R64 (escala A+/A- + responsividade + alinhamentos) — confira este carimbo no campo CSS/SCSS da instância após colar */
 @import url('https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700;800&display=swap');
 
 .itcd-sim {
@@ -761,4 +761,26 @@
   .itcd-sim .mini-card { flex: 0 0 auto; width: 100%; padding: 16px 18px; }
   .itcd-sim .mc-op { align-self: center; margin: 2px 0; }
   .itcd-sim .mc-op svg { transform: rotate(90deg); } /* seta aponta para baixo entre os cards empilhados */
+}
+
+/* ===== Ajustes de alinhamento (2026-07-17) ===== */
+/* (b) Cabeçalho de etapa (1 e 2) centralizado nos cards de entrada */
+.itcd-sim .card-etapa { justify-content: center; text-align: center; }
+/* (c) Botão "Simular imposto" centralizado */
+.itcd-sim .area-acoes.acoes-linha { justify-content: center; }
+/* (a) Estado vazio desce para o ícone alinhar com o centro do card "Herança" (só no desktop, 2 colunas) */
+.itcd-sim .empty-state { margin-top: 71px; }
+
+/* ===== Ajustes responsivos das tabelas no celular (modo empilhado) ===== */
+@media (max-width: 768px) {
+  /* Remove a faixa vazia deixada pelo cabeçalho oculto no modo empilhado */
+  .itcd-sim .tabela-calc thead { display: none; }
+  /* Células sem valor (ex.: Alíq./Base na linha ITCD) não deixam rótulo órfão */
+  .itcd-sim .tabela-calc td:empty { display: none; }
+}
+
+/* Abas "Como o imposto foi calculado" / "Multa e juros" compactas no celular */
+@media (max-width: 640px) {
+  .itcd-sim .br-tabs { gap: 4px; padding: 0 8px; }
+  .itcd-sim .br-tabs button { font-size: 13px; padding: 8px 10px; line-height: 1.25; flex: 1 1 0; }
 }

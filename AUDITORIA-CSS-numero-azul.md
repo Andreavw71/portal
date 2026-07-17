@@ -73,11 +73,26 @@ Auditei também o comportamento no celular (render real a 360px e 414px). Dois p
 
 Verificado: **sem rolagem horizontal** a 360/414px; o desktop **não muda** (mini-cards continuam em linha). O `zoom` da acessibilidade e a responsividade convivem sem conflito.
 
-## 4. Como aplicar
+## 4. Alinhamentos (desktop)
+
+Três ajustes pedidos, todos verificados por render real:
+- **(a)** O estado vazio (“Sua simulação aparecerá aqui”) desce para o **ícone ficar alinhado ao centro do card “Herança”** da 1ª coluna (`.empty-state { margin-top: 71px }`; medido: ícone e centro do card na mesma linha, delta 0px). Só afeta o desktop (2 colunas).
+- **(b)** Os cabeçalhos de etapa **1** e **2** dos cards de entrada ficam **centralizados** (`.card-etapa { justify-content: center; text-align: center }`).
+- **(c)** O botão **Simular imposto** fica **centralizado** (`.area-acoes.acoes-linha { justify-content: center }`).
+
+## 5. Responsividade — demais seções no celular
+
+- **Cards de opção (Herança/Doação):** já empilham corretamente; sem alteração necessária.
+- **Tabelas (“Como o imposto foi calculado” e encargos):** o modo empilhado (`data-label`) já existia. Corrigidos dois pontos a ≤ 768px: o **cabeçalho oculto deixava uma faixa vazia** (`thead { display: none }`) e as **células sem valor** da linha ITCD deixavam rótulos órfãos (`td:empty { display: none }`).
+- **Abas do detalhamento:** os botões “Como o imposto foi calculado” / “Multa e juros por atraso” **quebravam em 4–5 linhas** no celular. A ≤ 640px ficam compactos (`font-size: 13px`, padding menor, `flex: 1 1 0`).
+
+Verificado: **sem rolagem horizontal** a 360/414px; desktop inalterado.
+
+## 6. Como aplicar
 
 Arquivo pronto para colar: **`simulador_itcd - CSS-SCSS (corrigido).css`** (neste repositório).
-No Widget Editor do `simulador_itcd` → painel **CSS - SCSS** → **Ctrl+A → colar → Ctrl+S**. Carimbo esperado após colar: `VERSAO_CSS_SIMULADOR: 2026-07-17-R63`.
+No Widget Editor do `simulador_itcd` → painel **CSS - SCSS** → **Ctrl+A → colar → Ctrl+S**. Carimbo esperado após colar: `VERSAO_CSS_SIMULADOR: 2026-07-17-R64`.
 
-## 5. Observação (risco latente, não é a causa aqui)
+## 7. Observação (risco latente, não é a causa aqui)
 
 `.tooltip-box`: `max-width: min(300px, 74vw)`. Compiladores SCSS antigos (libsass) tratam `min()`/`max()` como função Sass e podem falhar ao misturar `px`+`vw`. Na sua instância isso compilou (o widget está estilizado), então **não é a causa** — mas se um dia a folha inteira “sumir” após colar, troque por `max-width: 300px`.
