@@ -5,7 +5,7 @@ Widget **`itcd_admin`**. Objetivo: quando o mês vira, o painel **lança SELIC 1
 ## Por que funciona sem quebrar o cálculo
 No simulador, `selicAcumuladaDetalhes` soma a SELIC **armazenada** apenas dos meses **entre** o vencimento e o mês atual, e para o **mês atual** soma sempre **+1,0** fixo (nunca lê o valor gravado do mês corrente). Portanto, gravar `1,00` no mês corrente é inócuo — e é exatamente o valor que precisa ser **substituído pela SELIC real** assim que o mês vira (o mês corrente de ontem passa a ser lido como “mês passado” nos cálculos). Daí o popup.
 
-Decisões adotadas: **UPF do mês corrente fica em branco** e o popup **exige** o preenchimento; **popup interativo** com botão Salvar (grava os dois meses de uma vez).
+Decisões adotadas: **UPF do mês corrente fica em branco** e o popup **exige** o preenchimento; **popup interativo** com botão Salvar (grava os dois meses de uma vez); a **SELIC do mês corrente é bloqueada** no formulário de Índices (sempre 1,00, pois o simulador não a lê). O popup pede apenas **UPF do mês corrente** + **SELIC do mês anterior**.
 
 São **4 blocos** do widget `itcd_admin`. Nada aqui reescreve o widget inteiro — são inserções pontuais.
 
@@ -199,6 +199,39 @@ if (data.autenticado) {
 ```
 
 > Se o painel admin já tiver um `.btn-adm` (tem), o botão **Salvar** reaproveita esse estilo.
+
+---
+
+## 5) Bloquear a SELIC do mês corrente (aba Índices)
+
+Como o simulador **nunca lê** a SELIC do mês corrente (usa sempre +1,0 fixo), esse campo é bloqueado para evitar edição inútil. O **popup continua pedindo os dois valores que importam**: **UPF do mês corrente** e **SELIC do mês anterior** (não há campo de SELIC do mês corrente no popup).
+
+**5a. HTML (Bloco 1)** — na aba Índices, **substitua** a linha do campo “SELIC do mês (%)” do formulário `adm-form`:
+
+```html
+<!-- ANTES -->
+<div class="af-campo"><label>SELIC do mês (%)</label><input type="number" step="0.01" ng-model="c.novo.selic" placeholder="Ex: 1.10"></div>
+
+<!-- DEPOIS -->
+<div class="af-campo"><label>SELIC do mês (%)</label>
+  <input ng-if="c.novo.mes !== c.data.mesCorrente" type="number" step="0.01" ng-model="c.novo.selic" placeholder="Ex: 1.10">
+  <div ng-if="c.novo.mes === c.data.mesCorrente" class="af-fixo">1,00 <span>fixo &middot; n&atilde;o usada no c&aacute;lculo</span></div>
+</div>
+```
+
+**5b. Server (Bloco 4)** — dentro da ação `addIndice`, logo **após** a linha `var selic = ...;`, adicione a salvaguarda (garante 1,00 mesmo que alguém burle a UI):
+
+```javascript
+      // [NOVO] SELIC do mês corrente é sempre 1,00 (o simulador não a lê)
+      if (mes === gs.nowDateTime().slice(0, 7)) { selic = 1; }
+```
+
+**5c. CSS (Bloco 2)** — acrescente o estilo do campo travado:
+
+```css
+.itcd-admin .af-fixo { height: 42px; display: flex; align-items: center; gap: 8px; padding: 0 12px; box-sizing: border-box; background: #F3F4F6; border: 1px dashed #D1D5DC; border-radius: 8px; color: #6A7282; font-size: 15px; font-weight: 700; }
+.itcd-admin .af-fixo span { font-weight: 400; font-size: 12px; line-height: 1.25; }
+```
 
 ---
 
