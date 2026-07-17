@@ -1,0 +1,401 @@
+<div class="itcd-admin" ng-class="{'guia-ativa': c.tab==='guia'}">
+
+  <!-- Login por senha -->
+  <div ng-if="!c.data.autenticado" class="login-box">
+    <div class="lb-icon">
+      <svg viewBox="0 0 24 24" aria-hidden="true"><rect x="3" y="11" width="18" height="11" rx="2" ry="2"></rect><path d="M7 11V7a5 5 0 0 1 10 0v4"></path></svg>
+    </div>
+    <div class="lb-orgao">Secretaria de Estado de Fazenda de Mato Grosso</div>
+    <h2>Painel Administrativo — ITCD</h2>
+    <p>Acesso restrito.</p>
+    <label class="lb-label" for="lbSenha">Senha</label>
+    <div class="lb-senha-wrap">
+      <input id="lbSenha" ng-if="!c.mostrarSenha" type="password" class="lb-input" ng-model="c.senha" ng-keyup="$event.keyCode === 13 && c.entrar()" placeholder="" autocomplete="off">
+      <input id="lbSenha" ng-if="c.mostrarSenha" type="text" class="lb-input" ng-model="c.senha" ng-keyup="$event.keyCode === 13 && c.entrar()" placeholder="" autocomplete="off">
+      <button type="button" class="lb-olho" ng-click="c.mostrarSenha = !c.mostrarSenha" aria-pressed="{{!!c.mostrarSenha}}" aria-label="{{c.mostrarSenha ? 'Ocultar senha' : 'Mostrar senha'}}" title="{{c.mostrarSenha ? 'Ocultar senha' : 'Mostrar senha'}}">
+        <svg ng-if="!c.mostrarSenha" viewBox="0 0 24 24" aria-hidden="true"><path d="M1 12s4-7 11-7 11 7 11 7-4 7-11 7-11-7-11-7z"></path><circle cx="12" cy="12" r="3"></circle></svg>
+        <svg ng-if="c.mostrarSenha" viewBox="0 0 24 24" aria-hidden="true"><path d="M17.94 17.94A10.07 10.07 0 0 1 12 20c-7 0-11-8-11-8a18.45 18.45 0 0 1 5.06-5.94"></path><path d="M9.9 4.24A9.12 9.12 0 0 1 12 4c7 0 11 8 11 8a18.5 18.5 0 0 1-2.16 3.19"></path><path d="M14.12 14.12A3 3 0 1 1 9.88 9.88"></path><line x1="1" y1="1" x2="23" y2="23"></line></svg>
+      </button>
+    </div>
+    <button class="lb-btn" ng-click="c.entrar()">Entrar</button>
+    <div class="lb-erro" role="alert" ng-if="c.erroLogin">Senha incorreta.</div>
+    <div class="lb-rodape">SEFAZ-MT &middot; Simulador de ITCD</div>
+  </div>
+
+  <!-- Painel -->
+  <div ng-if="c.data.autenticado">
+
+    <!-- ===== [NOVO] POPUP: virada de mês (atualização de índices) ===== -->
+    <div class="itcd-modal-overlay" ng-if="c.popupVirada">
+      <div class="itcd-modal" role="dialog" aria-modal="true" aria-labelledby="mv-titulo">
+        <div class="mv-icone" aria-hidden="true"><svg viewBox="0 0 24 24"><rect x="3" y="4" width="18" height="18" rx="2"></rect><line x1="16" y1="2" x2="16" y2="6"></line><line x1="8" y1="2" x2="8" y2="6"></line><line x1="3" y1="10" x2="21" y2="10"></line></svg></div>
+        <h3 id="mv-titulo">Novo mês detectado: {{c.data.mesCorrente}}</h3>
+        <p class="mv-texto">Lancei <strong>SELIC 1,00</strong> (provisória) para o mês corrente. Para manter os cálculos corretos, atualize os índices abaixo:</p>
+        <div class="mv-campo">
+          <label>SELIC consolidada de {{c.data.mesAnterior}} (%)</label>
+          <input type="number" step="0.01" ng-model="c.virada.selic" placeholder="Ex: 1.10">
+          <span class="mv-hint">Substitua o 1,00 provisório pelo valor real do Sicalc do mês anterior.</span>
+        </div>
+        <div class="mv-campo">
+          <label>UPF de {{c.data.mesCorrente}} (R$) <span class="mv-req">*</span></label>
+          <input type="number" step="0.01" ng-model="c.virada.upf" placeholder="Ex: 265.00" ng-keyup="$event.keyCode === 13 && c.salvarViradaMes()">
+          <span class="mv-hint" ng-if="c.data.upfSugerida">UPF do mês anterior: R$ {{c.fmt(c.data.upfSugerida)}} (repita se não houver reajuste anual).</span>
+        </div>
+        <div class="mv-msg" ng-if="c.viradaMsg" role="alert">{{c.viradaMsg}}</div>
+        <div class="mv-acoes">
+          <button class="btn-adm mv-salvar" ng-click="c.salvarViradaMes()">Salvar</button>
+          <button class="mv-adiar" ng-click="c.adiarVirada()">Adiar</button>
+        </div>
+        <p class="mv-nota">Enquanto a UPF do mês corrente não for informada, este aviso reaparecerá ao abrir o painel.</p>
+      </div>
+    </div>
+
+    <div class="adm-header">
+      <div>
+        <h1>Painel Administrativo — ITCD</h1>
+        <p>Índices UPF/SELIC · simulações · avaliações</p>
+      </div>
+      <div class="adm-acoes">
+        <button class="btn-alt-senha" ng-click="c.mostrarAltSenha = !c.mostrarAltSenha" aria-expanded="{{!!c.mostrarAltSenha}}">
+          <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M21 2l-2 2m-7.61 7.61a5.5 5.5 0 1 1-7.778 7.778 5.5 5.5 0 0 1 7.778-7.778zm0 0L15.5 7.5m0 0l3 3L22 7l-3-3m-3.5 3.5L19 4"></path></svg>
+          Alterar senha
+        </button>
+        <button class="btn-sair" ng-click="c.sair()">Sair</button>
+      </div>
+    </div>
+
+    <div class="alterar-senha" ng-if="c.mostrarAltSenha">
+      <div class="as-form">
+        <div class="as-campo">
+          <label for="asNova">Nova senha</label>
+          <input id="asNova" type="password" ng-model="c.novaSenha" autocomplete="new-password">
+        </div>
+        <div class="as-campo">
+          <label for="asNova2">Repetir a nova senha</label>
+          <input id="asNova2" type="password" ng-model="c.novaSenha2" autocomplete="new-password" ng-keyup="$event.keyCode === 13 && c.alterarSenha()">
+        </div>
+        <button class="btn-adm" ng-click="c.alterarSenha()" ng-disabled="!c.novaSenha || !c.novaSenha2">Alterar senha</button>
+      </div>
+      <div class="as-msg as-erro" role="alert" ng-if="c.msgSenhaLocal">{{c.msgSenhaLocal}}</div>
+      <div class="as-msg" ng-class="{'as-erro': !c.data.okSenha, 'as-ok': c.data.okSenha}" role="alert" ng-if="c.data.msgSenha">{{c.data.msgSenha}}</div>
+      <p class="adm-nota">A nova senha vale imediatamente para todos que acessam o painel. Ela é gravada na propriedade <code>x_itcd.admin_senha</code> (criada automaticamente se ainda não existir). Mínimo de 6 caracteres.</p>
+    </div>
+
+    <div class="adm-tabs">
+      <button ng-class="{ativa: c.tab==='indices'}" ng-click="c.setTab('indices')">Índices UPF/SELIC</button>
+      <button ng-class="{ativa: c.tab==='simulacoes'}" ng-click="c.setTab('simulacoes')">Simulações ({{c.data.totalSimulacoes}})</button>
+      <button ng-class="{ativa: c.tab==='avaliacoes'}" ng-click="c.setTab('avaliacoes')">Avaliações ({{c.data.avaliacaoTotal}})</button>
+      <button ng-class="{ativa: c.tab==='guia'}" ng-click="c.setTab('guia')">Guia</button>
+    </div>
+
+    <div class="adm-msg" ng-if="c.data.msg">{{c.data.msg}}</div>
+
+    <!-- ===== ÍNDICES ===== -->
+    <div ng-if="c.tab==='indices'">
+      <div class="adm-form">
+        <div class="af-campo"><label>Mês (AAAA-MM)</label><input type="text" ng-model="c.novo.mes" placeholder="2026-08"></div>
+        <div class="af-campo"><label>UPF (R$)</label><input type="number" step="0.01" ng-model="c.novo.upf" placeholder="Ex: 265.00"></div>
+        <div class="af-campo"><label>SELIC do mês (%)</label>
+          <input ng-if="c.novo.mes !== c.data.mesCorrente" type="number" step="0.01" ng-model="c.novo.selic" placeholder="Ex: 1.10">
+          <div ng-if="c.novo.mes === c.data.mesCorrente" class="af-fixo">1,00 <span>fixo · não usada no cálculo</span></div>
+        </div>
+        <button class="btn-adm" ng-click="c.salvarIndice()">Incluir / Atualizar</button>
+      </div>
+      <p class="adm-nota">Se o mês já existir, os valores são atualizados. A SELIC do mês é a diferença do acumulado do Sicalc (acum. do mês anterior − acum. do mês).</p>
+
+      <div class="lote-box">
+        <div class="lote-titulo">Colar do Excel (importação em lote)</div>
+        <p class="adm-nota" style="margin-top:0;">Cole as linhas com 3 colunas — <strong>Mês</strong> (AAAA-MM ou MM/AAAA), <strong>UPF</strong> e <strong>SELIC</strong> (opcional) — direto do Excel (Ctrl+C na planilha, Ctrl+V aqui). Aceita vírgula decimal. Meses já existentes são atualizados.</p>
+        <textarea class="lote-area" ng-model="c.lote" rows="6" placeholder="2026-07&#9;263,36&#9;1,12&#10;2026-08&#9;265,10&#9;1,05"></textarea>
+        <button class="btn-adm" ng-click="c.importarLote()" ng-disabled="!c.lote">Importar lote</button>
+        <ul class="lote-erros" ng-if="c.data.errosLote.length">
+          <li ng-repeat="e in c.data.errosLote">{{e}}</li>
+        </ul>
+      </div>
+
+
+      <div class="adm-tabela-wrap">
+        <table class="adm-tabela">
+          <thead><tr><th>Mês</th><th class="num">UPF (R$)</th><th class="num">SELIC (%)</th><th class="acao-col"></th></tr></thead>
+          <tbody>
+            <tr ng-repeat="ix in c.data.indices">
+              <td>{{ix.mes}}</td>
+              <td class="num">{{c.fmt(ix.upf)}}</td>
+              <td class="num">{{ix.selic === null ? '—' : c.fmt(ix.selic)}}</td>
+              <td class="num"><button class="btn-del" ng-click="c.removerIndice(ix.sysId, ix.mes)">Remover</button></td>
+            </tr>
+            <tr ng-if="!c.data.indices.length"><td colspan="4" class="vazio">Nenhum índice cadastrado na tabela.</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+
+    <!-- ===== SIMULAÇÕES ===== -->
+    <div ng-if="c.tab==='simulacoes'">
+      <div class="adm-toolbar">
+        <p class="adm-nota" style="margin:0;">Exibindo as {{c.data.simulacoes.length}} mais recentes de <strong>{{c.data.totalSimulacoes}}</strong> registradas &middot; 150 por página.</p>
+        <button class="btn-exportar" ng-click="c.exportarSimulacoes()" ng-disabled="!c.data.simulacoes.length">&#11123; Exportar CSV</button>
+      </div>
+      <div class="adm-tabela-wrap">
+        <table class="adm-tabela">
+          <thead><tr><th>Data/hora</th><th>Tipo</th><th class="num">Qtd doações</th><th class="num">Valor</th><th class="num">Imposto</th><th class="num">Multa</th><th class="num">Juros</th><th class="num">Total</th><th>Situação</th><th>Dados informados</th><th>Cálculo por doação</th></tr></thead>
+          <tbody>
+            <tr ng-repeat="s in c.data.simulacoes | limitTo:150:(c.pagSim-1)*150">
+              <td class="nowrap">{{s.dh}}</td>
+              <td>{{s.tipo}}</td>
+              <td class="num">{{s.tipo === 'Doação' ? s.qtdDoacoes : '—'}}</td>
+              <td class="num">{{c.fmt(s.valor)}}</td>
+              <td class="num">{{c.fmt(s.imposto)}}</td>
+              <td class="num">{{c.fmt(s.multa)}}</td>
+              <td class="num">{{c.fmt(s.juros)}}</td>
+              <td class="num tot">{{c.fmt(s.total)}}</td>
+              <td>{{s.dispensa ? 'Dispensado' : (s.sucessiva ? 'Sucessiva' : '—')}}</td>
+              <td class="doacoes-col">{{s.tipo === 'Doação' ? c.parseDoacoes(s.doacoes) : ('Fato: ' + (s.dataFato || '—') + (s.dataRef ? ' · Ref: ' + s.dataRef : ''))}}</td>
+              <td class="doacoes-col">{{c.parseBlocos(s.blocos)}}</td>
+            </tr>
+            <tr ng-if="!c.data.simulacoes.length"><td colspan="11" class="vazio">Nenhuma simulação registrada.</td></tr>
+          </tbody>
+        </table>
+      </div>
+      <div class="adm-paginador" ng-if="c.data.simulacoes.length > 150">
+        <button class="btn-pag" ng-click="c.pagSim = c.pagSim - 1" ng-disabled="c.pagSim <= 1">&larr; Anterior</button>
+        <span>Página {{c.pagSim}} de {{c.totalPags(c.data.simulacoes)}}</span>
+        <button class="btn-pag" ng-click="c.pagSim = c.pagSim + 1" ng-disabled="c.pagSim >= c.totalPags(c.data.simulacoes)">Pr&oacute;xima &rarr;</button>
+      </div>
+    </div>
+
+    <!-- ===== AVALIAÇÕES ===== -->
+    <div ng-if="c.tab==='avaliacoes'">
+      <div class="adm-toolbar">
+        <div class="adm-resumo-av" style="margin:0;">Média: <strong class="estrelas-media">{{c.estrelasTexto(c.data.avaliacaoMedia)}}</strong> {{c.data.avaliacaoMedia}} — {{c.data.avaliacaoTotal}} avaliações</div>
+        <button class="btn-exportar" ng-click="c.exportarAvaliacoes()" ng-disabled="!c.data.avaliacoes.length">&#11123; Exportar CSV</button>
+      </div>
+      <div class="adm-tabela-wrap">
+        <table class="adm-tabela">
+          <thead><tr><th>Data/hora</th><th>Estrelas</th><th>Comentário</th></tr></thead>
+          <tbody>
+            <tr ng-repeat="a in c.data.avaliacoes | limitTo:150:(c.pagAva-1)*150">
+              <td class="nowrap">{{a.dh}}</td>
+              <td class="estrelas-cel">{{c.estrelasTexto(a.estrelas)}}</td>
+              <td>{{a.comentario || '—'}}</td>
+            </tr>
+            <tr ng-if="!c.data.avaliacoes.length"><td colspan="3" class="vazio">Nenhuma avaliação registrada.</td></tr>
+          </tbody>
+        </table>
+      </div>
+      <div class="adm-paginador" ng-if="c.data.avaliacoes.length > 150">
+        <button class="btn-pag" ng-click="c.pagAva = c.pagAva - 1" ng-disabled="c.pagAva <= 1">&larr; Anterior</button>
+        <span>Página {{c.pagAva}} de {{c.totalPags(c.data.avaliacoes)}}</span>
+        <button class="btn-pag" ng-click="c.pagAva = c.pagAva + 1" ng-disabled="c.pagAva >= c.totalPags(c.data.avaliacoes)">Pr&oacute;xima &rarr;</button>
+      </div>
+    </div>
+
+    <!-- ===== GUIA (embutido) ===== -->
+    <div ng-if="c.tab==='guia'">
+      <div class="adm-toolbar guia-toolbar">
+        <p class="adm-nota" style="margin:0;">Guia de implantação e manuten&ccedil;&atilde;o &mdash; vers&atilde;o embutida no widget (viaja no update set).</p>
+        <button class="btn-exportar" ng-click="c.imprimirGuia()">&#128424; Imprimir guia</button>
+      </div>
+      <div class="guia-doc" ng-non-bindable>
+<div class="print-run-header"><span>SEFAZ-MT · Simulador de ITCD</span><span>Guia de Configuração ServiceNow Zurich</span></div>
+<div class="print-run-footer"><span>Documento interno — sujeito a atualização</span><span>sefazmtdev.service-now.com</span></div>
+
+<div class="pagina">
+
+  <div class="doc-header">
+    <div class="dh-left">
+      <div class="orgao">Secretaria de Estado de Fazenda de Mato Grosso</div>
+      <h1>Guia de Configuração — ServiceNow Zurich</h1>
+      <p class="sub">Simulador de ITCD e Painel Administrativo · Service Portal · escopo Global</p>
+    </div>
+    <span class="dh-badge">SEFAZ-MT · ITCD</span>
+  </div>
+  <div class="doc-meta">Versão 2.0 (Zurich) · Instância de desenvolvimento: <code>sefazmtdev.service-now.com</code> · Para gerar o PDF: imprimir esta página (Ctrl+P) — já paginada em A4 com cabeçalho e rodapé corridos.</div>
+
+  <div class="links-nav">
+    <a href="https://sefazmtdev.service-now.com/swp?id=citcd_admin">&larr; Voltar ao Painel Administrativo</a>
+    <a href="https://sefazmtdev.service-now.com/swp?id=simulador_itcd1">Abrir o Simulador de ITCD &rarr;</a>
+  </div>
+
+  <!-- ============ 1. VISÃO GERAL ============ -->
+  <h2><span class="num-pill">1</span>Visão geral — componentes, eventos e tabelas</h2>
+  <p>A solução é composta por <strong>2 widgets</strong> do Service Portal e <strong>3 tabelas</strong>, tudo em <strong>escopo Global</strong> (a instância não permite aplicativo com escopo próprio):</p>
+  <table>
+    <thead><tr><th>Componente</th><th>Identificação</th><th>Função</th></tr></thead>
+    <tbody>
+      <tr><td><strong>Widget Simulador</strong></td><td>id <code>simulador_itcd</code> · página <code>simulador_itcd</code> · portal <code>swp</code></td><td>Cálculo do ITCD (herança e doações), impressão, avaliação por estrelas</td></tr>
+      <tr><td><strong>Widget Painel Administrativo</strong></td><td>id <code>itcd_admin</code> · página <code>itcd_admin</code></td><td>Manutenção mensal de UPF/SELIC; consulta de simulações e avaliações; protegido por senha</td></tr>
+    </tbody>
+  </table>
+  <p>Cada tipo de evento grava numa tabela própria. A gravação é feita <strong>pelo Server Script dos widgets (GlideRecord)</strong> — roda no servidor da instância, sem credenciais no navegador:</p>
+  <table>
+    <thead><tr><th>Evento</th><th>Origem</th><th>Tabela de destino</th></tr></thead>
+    <tbody>
+      <tr><td>Simulação (cálculo executado)</td><td>Simulador</td><td><code>u_itcd_simulacao</code></td></tr>
+      <tr><td>Avaliação (estrelas + comentário)</td><td>Simulador (rodapé)</td><td><code>u_u_itcd_avaliacao</code></td></tr>
+      <tr><td>Índice mensal (UPF e SELIC)</td><td>Painel Administrativo</td><td><code>u_ndice_upf_e_selic</code></td></tr>
+    </tbody>
+  </table>
+  <p><strong>A tabela <code>u_ndice_upf_e_selic</code> é a FONTE ÚNICA dos índices</strong> — o código não tem mais série embutida. A tabela deve conter a série completa (1999-01 até o mês vigente); a carga inicial é feita pela planilha <code>UPF_SELIC_alimentacao.xlsx</code> via "Colar do Excel" no Painel Administrativo. Se a tabela estiver vazia ou inacessível, o simulador exibe um aviso e <strong>não calcula</strong>.</p>
+
+  <!-- ============ 2. TABELAS ============ -->
+  <h2><span class="num-pill">2</span>Tabelas e campos — passo a passo de criação e inclusão</h2>
+  <p><strong>Situação atual da instância:</strong> as três tabelas <strong>já existem</strong>, com estes nomes reais (o ServiceNow gerou os nomes a partir dos labels digitados):</p>
+  <table>
+    <thead><tr><th>Função</th><th>Name real na instância</th><th>Situação</th></tr></thead>
+    <tbody>
+      <tr><td>Índices UPF/SELIC</td><td><code>u_ndice_upf_e_selic</code></td><td>Em uso — conferir se a coluna <code>u_selic</code> existe</td></tr>
+      <tr><td>Log de simulações</td><td><code>u_itcd_simulacao</code></td><td>Criada — <strong>incluir as colunas abaixo</strong></td></tr>
+      <tr><td>Avaliações</td><td><code>u_u_itcd_avaliacao</code></td><td>Criada — <strong>incluir as colunas abaixo</strong></td></tr>
+    </tbody>
+  </table>
+  <p>As tabelas <code>u_x_sfmt_itcd_indice_upf</code> (app antigo travado) e <code>u_indice_selic</code> <strong>não são usadas</strong> — ignorar.</p>
+  <div class="alerta"><span class="t">Por que os nomes saíram "duplicados"</span>Ao criar tabela/coluna, o ServiceNow adiciona o prefixo <code>u_</code> ao que você digita no Label. Digitando o label já com <code>u_</code>, sai <code>u_u_...</code>. <strong>Regra prática:</strong> digite labels <strong>sem</strong> <code>u_</code> e sempre confira o campo <em>Column name</em> antes de salvar — ele é editável na criação. Os Server Scripts já foram ajustados para os nomes reais acima.</div>
+
+  <h3>2.0 — Como incluir UMA coluna (procedimento-base, vale para todas)</h3>
+  <ol>
+    <li>Abra a lista da tabela pela URL direta: <span class="caminho">/u_itcd_simulacao_list.do</span> (ou <span class="caminho">/u_u_itcd_avaliacao_list.do</span>, <span class="caminho">/u_ndice_upf_e_selic_list.do</span>).</li>
+    <li>Clique com o <strong>botão direito em qualquer cabeçalho de coluna</strong> → <em>Configure</em> → <em>Table</em>. Abre o registro da tabela com a lista <em>Columns</em>.</li>
+    <li>Na lista <em>Columns</em>, clique <strong>New</strong>.</li>
+    <li>Preencha <strong>nesta ordem</strong>:
+      <ul>
+        <li><strong>Type</strong> — escolha primeiro (String, Decimal, Integer ou True/False), pois o formulário muda conforme o tipo;</li>
+        <li><strong>Column label</strong> — digite <strong>sem</strong> <code>u_</code> (ex.: <code>tipo_fato</code>);</li>
+        <li><strong>Column name</strong> — confira/edite para ficar <strong>exatamente</strong> como na tabela abaixo (ex.: <code>u_tipo_fato</code>);</li>
+        <li><strong>Max length</strong> — só para String, conforme a tabela.</li>
+      </ul>
+    </li>
+    <li><strong>Submit</strong>. Repita para a próxima coluna.</li>
+  </ol>
+  <p>Alternativa pelo menu: <span class="caminho">All → System Definition → Tables</span> → abrir a tabela → aba <em>Columns</em> → New (mesmo formulário).</p>
+
+  <h3>2.1 — Colunas de <code>u_itcd_simulacao</code> (15 colunas)</h3>
+  <table>
+    <thead><tr><th>#</th><th>Column name (exato)</th><th>Type</th><th>Max length</th><th>Guarda</th></tr></thead>
+    <tbody>
+      <tr><td>1</td><td><code>u_tipo_fato</code></td><td>String</td><td>40</td><td>"Causa Mortis" ou "Doação"</td></tr>
+      <tr><td>2</td><td><code>u_valor</code></td><td>Decimal</td><td>—</td><td>Valor da herança OU soma das doações</td></tr>
+      <tr><td>3</td><td><code>u_qtd_doacoes</code></td><td>Integer</td><td>—</td><td>Quantidade de doações (0 p/ herança)</td></tr>
+      <tr><td>4</td><td><code>u_data_fato</code></td><td>String</td><td>10</td><td>Data do óbito / 1ª doação (AAAA-MM-DD)</td></tr>
+      <tr><td>5</td><td><code>u_data_referencia</code></td><td>String</td><td>10</td><td>Data de abertura do inventário/protocolo</td></tr>
+      <tr><td>6</td><td><code>u_doacoes</code></td><td>String</td><td>4000</td><td>JSON das doações digitadas</td></tr>
+      <tr><td>7</td><td><code>u_entrada</code></td><td>String</td><td>4000</td><td>JSON de todos os dados informados</td></tr>
+      <tr><td>8</td><td><code>u_blocos</code></td><td>String</td><td><strong>8000</strong></td><td>JSON do cálculo por doação (faixas, encargos, totais)</td></tr>
+      <tr><td>9</td><td><code>u_base</code></td><td>Decimal</td><td>—</td><td>Base de cálculo total</td></tr>
+      <tr><td>10</td><td><code>u_imposto</code></td><td>Decimal</td><td>—</td><td>Imposto original total</td></tr>
+      <tr><td>11</td><td><code>u_multa</code></td><td>Decimal</td><td>—</td><td>Multa total</td></tr>
+      <tr><td>12</td><td><code>u_juros</code></td><td>Decimal</td><td>—</td><td>Juros (SELIC) totais</td></tr>
+      <tr><td>13</td><td><code>u_total</code></td><td>Decimal</td><td>—</td><td>Total a recolher</td></tr>
+      <tr><td>14</td><td><code>u_dispensa</code></td><td>True/False</td><td>—</td><td>Dispensa aplicada</td></tr>
+      <tr><td>15</td><td><code>u_sucessiva</code></td><td>True/False</td><td>—</td><td>Doação sucessiva aplicada</td></tr>
+    </tbody>
+  </table>
+  <p>Data/hora do registro: coluna nativa <code>sys_created_on</code> — <strong>não criar</strong>.</p>
+
+  <h3>2.2 — Colunas de <code>u_u_itcd_avaliacao</code> (2 colunas)</h3>
+  <table>
+    <thead><tr><th>#</th><th>Column name (exato)</th><th>Type</th><th>Max length</th><th>Guarda</th></tr></thead>
+    <tbody>
+      <tr><td>1</td><td><code>u_estrelas</code></td><td>Integer</td><td>—</td><td>Nota de 1 a 5</td></tr>
+      <tr><td>2</td><td><code>u_comentario</code></td><td>String</td><td>4000</td><td>Comentário (opcional)</td></tr>
+    </tbody>
+  </table>
+
+  <h3>2.3 — Conferir <code>u_ndice_upf_e_selic</code> (3 colunas)</h3>
+  <table>
+    <thead><tr><th>#</th><th>Column name (exato)</th><th>Type</th><th>Max length</th><th>Guarda</th></tr></thead>
+    <tbody>
+      <tr><td>1</td><td><code>u_mes</code></td><td>String</td><td>7</td><td>Competência AAAA-MM (1 registro por mês)</td></tr>
+      <tr><td>2</td><td><code>u_valor</code></td><td>Decimal</td><td>—</td><td>UPF/MT do mês (R$)</td></tr>
+      <tr><td>3</td><td><code>u_selic</code></td><td>Decimal</td><td>—</td><td>SELIC do mês (%) — <strong>criar se não existir</strong></td></tr>
+    </tbody>
+  </table>
+  <div class="dica"><span class="t">Conferência final das colunas</span>Depois de criar tudo, volte em <em>Configure → Table</em> e compare a lista <em>Columns</em> com as tabelas acima, <strong>nome por nome</strong>. Se algum name tiver saído diferente (ex.: <code>u_u_tipo_fato</code>), corrija recriando a coluna ou avise para ajustar o script. Nome divergente = gravação falha em silêncio.</div>
+  <div class="dica"><span class="t">Como obter a SELIC do mês</span>SELIC mensal = diferença do acumulado do Sicalc: <code>acumulado(mês anterior) − acumulado(mês)</code>. Conferir sempre no PDF oficial antes de lançar.</div>
+
+  <!-- ============ 3. WIDGETS ============ -->
+  <h2><span class="num-pill">3</span>Widgets — criação e os 4 painéis</h2>
+  <p><strong>Onde:</strong> <span class="caminho">All → Service Portal → Widgets</span> → <em>New</em> (ou editar existente). Para editar o código, use o <strong>Widget Editor</strong>: <span class="caminho">All → Service Portal → Service Portal Configuration → Widget Editor</span> → selecione o widget.</p>
+  <table>
+    <thead><tr><th>Widget</th><th>Name / ID</th><th>Fonte dos 4 blocos</th></tr></thead>
+    <tbody>
+      <tr><td>Simulador</td><td>Teste ITCD · <code>simulador_itcd</code></td><td>Arquivo <code>itcd_widget_servicenow_backup.md</code></td></tr>
+      <tr><td>Painel Administrativo</td><td>ITCD Admin · <code>itcd_admin</code></td><td>Arquivo <code>itcd_admin_widget_servicenow.md</code></td></tr>
+    </tbody>
+  </table>
+  <p>Em cada widget, cole os blocos nos painéis correspondentes do Widget Editor e salve com <strong>Ctrl+S</strong>:</p>
+  <table>
+    <thead><tr><th>Painel do Widget Editor</th><th>Bloco</th><th>1ª linha esperada (conferência)</th></tr></thead>
+    <tbody>
+      <tr><td>HTML Template</td><td>Bloco 1</td><td><code>&lt;div class="itcd-sim"&gt;</code> (simulador) · <code>&lt;div class="itcd-admin"&gt;</code> (painel)</td></tr>
+      <tr><td>CSS - SCSS</td><td>Bloco 2</td><td><code>@import ... Manrope ...</code></td></tr>
+      <tr><td>Client Script</td><td>Bloco 3</td><td><code>api.controller = function() {</code></td></tr>
+      <tr><td>Server Script</td><td>Bloco 4</td><td><code>(function() {</code></td></tr>
+    </tbody>
+  </table>
+  <div class="dica"><span class="t">Opção do editor</span>No Widget Editor, menu (⋮) → deixe marcado <strong>"Enable ECMAScript 2021 (ES12) mode"</strong>. O código é compatível com esse modo.</div>
+  <div class="alerta"><span class="t">Erro mais comum</span>Colar um bloco no painel errado. Sempre confira a <strong>1ª linha</strong> de cada painel com a tabela acima antes de salvar. Em caso de dúvida, apague todo o conteúdo do painel (Ctrl+A → Delete) e cole de novo.</div>
+
+  <!-- ============ 4. PÁGINAS E PORTAL ============ -->
+  <h2><span class="num-pill">4</span>Páginas e portal</h2>
+  <ol>
+    <li><strong>Criar a página:</strong> <span class="caminho">All → Service Portal → Pages</span> → <em>New</em>. Título e <strong>ID</strong>: <code>simulador_itcd</code> (simulador) e <code>itcd_admin</code> (painel).</li>
+    <li><strong>Colocar o widget na página:</strong> abra a página no <strong>Designer</strong> (<span class="caminho">All → Service Portal → Service Portal Configuration → Designer</span> → selecione a página), arraste um container e, dentro dele, o widget correspondente. Salva automaticamente.</li>
+    <li><strong>URL de acesso:</strong> o portal desta instância é <code>swp</code> — as páginas ficam em <code>https://sefazmtdev.service-now.com/swp?id=simulador_itcd1</code> e <code>.../swp?id=citcd_admin</code>. A forma infalível de obter a URL certa: no Designer, clique no ícone <em>"Open in new window"</em> (canto superior direito) e copie o endereço.</li>
+    <li><strong>Acesso às páginas:</strong> exige login na instância (Conecta). <strong>Não preencha o campo <em>Roles</em></strong> do registro da página do painel com <code>admin</code> — isso bloquearia o mantenedor dos índices, que não é admin. O controle de acesso do painel é a <strong>senha</strong> (seção 5).</li>
+  </ol>
+
+  <!-- ============ 5. SENHA DO PAINEL ============ -->
+  <h2><span class="num-pill">5</span>Senha do Painel Administrativo</h2>
+  <ol>
+    <li><strong>Criar a propriedade:</strong> <span class="caminho">All → System Definition → System Properties</span> → <em>New</em>. Preencha: <em>Name</em> = <code>x_itcd.admin_senha</code> · <em>Type</em> = string · <em>Value</em> = a senha escolhida. Salve.</li>
+    <li>O Server Script do painel lê essa propriedade automaticamente. <strong>Enquanto ela não existir</strong>, vale a senha padrão gravada no código (<code>ALTERE_ESTA_SENHA</code>) — troque ou crie a propriedade <strong>antes</strong> de divulgar o painel.</li>
+    <li><strong>Como funciona:</strong> a senha é conferida <strong>no servidor</strong> a cada ação; os dados só são carregados se a senha bater; o navegador nunca recebe a senha de volta. Há botão <em>Sair</em>.</li>
+    <li><strong>Quem precisa de quê:</strong> o mantenedor dos índices precisa apenas de <strong>login no Conecta + link da página + senha</strong>. Nenhum papel de admin ou desenvolvedor. A gravação nas tabelas é feita pelo Server Script (acesso de sistema, escopo Global) — não requer ACL para o usuário.</li>
+  </ol>
+  <div class="alerta"><span class="t">Nível de proteção — leitura honesta</span>A senha barra o usuário comum do portal, que é o alvo real: quem não tem perfil de desenvolvedor não abre o Widget Editor e não vê o Server Script. Quem <strong>tem</strong> acesso de desenvolvedor à instância consegue ver a senha se ela estiver no código — por isso a System Property é o modo recomendado (visível só a admins).</div>
+
+  <!-- ============ 6. MANUTENÇÃO MENSAL ============ -->
+  <h2><span class="num-pill">6</span>Manutenção mensal dos índices (rotina do mantenedor)</h2>
+  <ol>
+    <li>Obter no site do Sicalc o acumulado SELIC do mês e calcular a taxa do mês (diferença dos acumulados). Obter a UPF/MT vigente divulgada pela SEFAZ.</li>
+    <li>Abrir <code>.../swp?id=citcd_admin</code> → digitar a senha → aba <strong>Índices UPF/SELIC</strong>.</li>
+    <li>Preencher <strong>Mês</strong> (formato <code>AAAA-MM</code>), <strong>UPF (R$)</strong> e <strong>SELIC do mês (%)</strong> → <em>Incluir / Atualizar</em>.</li>
+    <li>Conferir a linha na lista logo abaixo. Incluir o mesmo mês novamente <strong>atualiza</strong> o registro (não duplica). O botão <em>Remover</em> exclui um mês lançado errado.</li>
+    <li><strong>Vários meses de uma vez (colar do Excel):</strong> na mesma aba, use a caixa <em>"Colar do Excel"</em> — selecione na planilha as 3 colunas (Mês, UPF, SELIC), Ctrl+C, cole na caixa (Ctrl+V) e clique <em>Importar lote</em>. Aceita mês como <code>AAAA-MM</code> ou <code>MM/AAAA</code> e números com vírgula (ex.: <code>263,36</code>). Meses existentes são atualizados; erros são listados linha a linha e as linhas corretas entram mesmo assim.</li>
+    <li>O simulador passa a usar o valor imediatamente (a tabela sobrepõe a série embutida).</li>
+  </ol>
+
+  <!-- ============ 7. TESTE PONTA A PONTA ============ -->
+  <h2><span class="num-pill">7</span>Teste de ponta a ponta — checklist</h2>
+  <ol class="checklist">
+    <li><strong>Tabelas:</strong> conferir que <code>u_ndice_upf_e_selic</code>, <code>u_itcd_simulacao</code> e <code>u_u_itcd_avaliacao</code> existem com todas as colunas da seção 2 (atenção: <code>u_selic</code>, <code>u_qtd_doacoes</code>, <code>u_entrada</code>, <code>u_blocos</code> com 8000).</li>
+    <li><strong>Widgets:</strong> abrir cada widget no Widget Editor e conferir a 1ª linha dos 4 painéis (tabela da seção 3). Salvar e usar o Preview (ícone de olho).</li>
+    <li><strong>Páginas:</strong> abrir <code>/swp?id=simulador_itcd1</code> e <code>/swp?id=citcd_admin</code> logado na instância.</li>
+    <li><strong>Senha:</strong> no painel, senha errada não pode carregar nenhum dado; senha certa abre as 3 abas; <em>Sair</em> volta ao login.</li>
+    <li><strong>Índice:</strong> incluir um mês de teste (ex.: <code>2099-01</code>, UPF 999, SELIC 9). Conferir na lista do painel e em <span class="caminho">/u_ndice_upf_e_selic_list.do</span>. Incluir o mesmo mês com outro valor → deve atualizar, não duplicar. Remover o mês de teste ao final.</li>
+    <li><strong>Cálculo herança:</strong> no simulador, calcular uma herança (ex.: R$ 500.000, óbito em ano recente). Conferir demonstrativo (faixas, multa) e o registro em <span class="caminho">/u_itcd_simulacao_list.do</span> com <code>u_entrada</code> e <code>u_blocos</code> preenchidos e totais iguais aos da tela.</li>
+    <li><strong>Cálculo 2+ doações:</strong> calcular com duas doações no mesmo ano; conferir o aviso "Regra de doações sucessivas", o acúmulo de faixas, e no registro <code>u_qtd_doacoes = 2</code> com os dois blocos em <code>u_blocos</code>.</li>
+    <li><strong>Avaliação:</strong> enviar estrelas + comentário; conferir o "obrigado", o contador/média no rodapé do simulador e o registro na aba Avaliações do painel.</li>
+    <li><strong>Impressão:</strong> calcular → <em>Imprimir</em>: o PDF deve conter apenas o demonstrativo, com marca d'água diagonal, data/hora de emissão e a tarja "Documento gerado pelo simulador de ITCD — Sujeito a conferência no sistema oficial da SEFAZ-MT."</li>
+    <li><strong>Conta real do mantenedor:</strong> repetir os passos 4–5 logado com a conta do mantenedor (Conecta, sem perfil de desenvolvedor), confirmando que ele acessa, grava e vê os índices.</li>
+  </ol>
+
+  <div class="doc-footer">
+    <span>SEFAZ-MT · Simulador de ITCD — Guia de Configuração ServiceNow Zurich (v2.0)</span>
+    <span>Painel <code>/swp?id=citcd_admin</code> · Simulador <code>/swp?id=simulador_itcd1</code></span>
+  </div>
+
+</div>
+      </div>
+    </div>
+
+
+    <div class="adm-footer">
+      <a href="javascript:void(0)" ng-click="c.setTab('guia')">Guia de implanta&ccedil;&atilde;o</a>
+      <span>&middot;</span>
+      <a href="?id=simulador_itcd1">Abrir o Simulador de ITCD &rarr;</a>
+    </div>
+
+  </div>
+</div>

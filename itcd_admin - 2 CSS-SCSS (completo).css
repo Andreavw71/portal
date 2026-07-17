@@ -1,0 +1,233 @@
+@import url('https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700;800&display=swap');
+
+.itcd-admin {
+  --azul: #2A66D9; --azul-hover: #1E4FB0; --azul-tint: #EEF3FE;
+  --strong: #101828; --label: #364153; --body: #4A5565; --muted: #6A7282;
+  --borda: #E4E7EC; --borda-input: #CBD2DE;
+  --erro: #DC2626; --ok: #067647;
+  --r: 8px; --r-sm: 6px;
+  font-family: 'Manrope', system-ui, sans-serif;
+  font-size: 14.5px; line-height: 1.65;
+  color: var(--body); max-width: 1320px; margin: 0 auto; padding: 12px 8px; width: 100%; box-sizing: border-box;
+}
+.itcd-admin * { box-sizing: border-box; }
+
+/* Login por senha — padrão institucional */
+.itcd-admin .login-box { max-width: 400px; margin: 56px auto; text-align: center; border: 1px solid var(--borda); border-top: 4px solid var(--azul); border-radius: 12px; padding: 34px 30px 24px; background: #fff; box-shadow: 0 1px 3px rgba(16,24,40,.06); }
+.itcd-admin .lb-icon { width: 52px; height: 52px; margin: 0 auto 14px; background: var(--azul-tint); border-radius: 12px; display: flex; align-items: center; justify-content: center; }
+.itcd-admin .lb-icon svg { width: 26px; height: 26px; stroke: var(--azul); fill: none; stroke-width: 1.8; stroke-linecap: round; stroke-linejoin: round; }
+.itcd-admin .lb-orgao { font-size: 11.5px; letter-spacing: .08em; text-transform: uppercase; color: var(--muted); font-weight: 600; margin-bottom: 4px; }
+.itcd-admin .login-box h2 { margin: 0 0 4px; color: var(--strong); font-size: 20px; font-weight: 800; }
+.itcd-admin .login-box p { margin: 0 0 20px; color: var(--muted); font-size: 14.5px; }
+.itcd-admin .lb-label { display: block; text-align: left; font-size: 14px; font-weight: 600; color: var(--label); margin-bottom: 5px; }
+.itcd-admin .lb-input { width: 100%; height: 42px; padding: 0 14px; border: 1px solid var(--borda-input); border-radius: var(--r); font-family: inherit; font-size: 15px; color: var(--strong); background: #fff; margin-bottom: 14px; box-sizing: border-box; }
+.itcd-admin .lb-input:focus { outline: none; border-color: var(--azul); box-shadow: 0 0 0 3px rgba(42,102,217,.15); }
+.itcd-admin .lb-btn { width: 100%; height: 42px; background: var(--azul); color: #fff; border: none; border-radius: var(--r); font-family: inherit; font-size: 15px; font-weight: 600; cursor: pointer; }
+.itcd-admin .lb-btn:hover { background: var(--azul-hover); }
+.itcd-admin .lb-erro { margin-top: 12px; color: var(--erro); font-size: 13.5px; font-weight: 600; }
+.itcd-admin .lb-rodape { margin-top: 20px; padding-top: 14px; border-top: 1px solid var(--borda); font-size: 11px; color: var(--muted); letter-spacing: .03em; }
+
+/* Cabeçalho */
+.itcd-admin .adm-header { margin-bottom: 20px; display: flex; align-items: flex-start; justify-content: space-between; gap: 16px; }
+.itcd-admin .btn-sair { flex-shrink: 0; background: #fff; color: var(--body); border: 1px solid var(--borda-input); border-radius: var(--r); padding: 8px 16px; font-family: inherit; font-size: 13.5px; font-weight: 600; cursor: pointer; }
+.itcd-admin .btn-sair:hover { background: #FAFBFC; }
+.itcd-admin .adm-header h1 { margin: 0; font-size: 24px; font-weight: 700; color: var(--strong); }
+.itcd-admin .adm-header p { margin: 4px 0 0; color: var(--muted); font-size: 15px; }
+
+/* Abas */
+.itcd-admin .adm-tabs { display: flex; gap: 4px; border-bottom: 1px solid var(--borda); margin-bottom: 16px; flex-wrap: wrap; }
+.itcd-admin .adm-tabs button { background: none; border: none; border-bottom: 2px solid transparent; padding: 12px 18px; font-family: inherit; font-size: 15px; font-weight: 600; color: var(--muted); cursor: pointer; margin-bottom: -1px; }
+.itcd-admin .adm-tabs button.ativa { color: var(--azul); border-bottom-color: var(--azul); }
+.itcd-admin .adm-tabs button:hover { color: var(--azul); }
+
+/* Mensagem */
+.itcd-admin .adm-msg { background: var(--azul-tint); border: 1px solid #C7D7F7; border-radius: var(--r-sm); padding: 12px 16px; font-size: 15px; color: #1E3A8A; margin-bottom: 16px; }
+
+/* Formulário de índices */
+.itcd-admin .adm-form { display: flex; gap: 12px; align-items: flex-end; flex-wrap: wrap; background: #FAFBFC; border: 1px solid var(--borda); border-radius: var(--r); padding: 16px; margin-bottom: 8px; }
+.itcd-admin .af-campo { display: flex; flex-direction: column; gap: 5px; }
+.itcd-admin .af-campo label { font-size: 14px; font-weight: 600; color: var(--label); }
+.itcd-admin .af-campo input { height: 40px; padding: 0 12px; border: 1px solid var(--borda-input); border-radius: var(--r); font-family: inherit; font-size: 15px; color: var(--strong); background: #fff; width: 160px; }
+.itcd-admin .af-campo input:focus { outline: none; border-color: var(--azul); box-shadow: 0 0 0 3px rgba(42,102,217,.15); }
+.itcd-admin .btn-adm { height: 44px; padding: 0 22px; background: var(--azul); color: #fff; border: none; border-radius: var(--r); font-family: inherit; font-size: 15px; font-weight: 600; cursor: pointer; }
+.itcd-admin .btn-adm:hover { background: var(--azul-hover); }
+
+.itcd-admin .adm-nota { font-size: 13px; color: var(--muted); margin: 8px 0 16px; line-height: 1.5; }
+
+/* Tabelas */
+.itcd-admin .adm-tabela-wrap { overflow-x: auto; border: 1px solid var(--borda); border-radius: var(--r); }
+.itcd-admin .adm-tabela { width: 100%; border-collapse: collapse; font-size: 14.5px; }
+.itcd-admin .adm-tabela thead th { background: #EAEEF7; color: var(--label); font-weight: 600; text-align: left; padding: 12px 16px; border-bottom: 1px solid var(--borda); white-space: nowrap; }
+.itcd-admin .adm-tabela th.num, .itcd-admin .adm-tabela td.num { text-align: right; }
+.itcd-admin .adm-tabela tbody td { padding: 11px 16px; border-bottom: 1px solid var(--borda); color: var(--body); vertical-align: top; }
+.itcd-admin .adm-tabela tbody tr:last-child td { border-bottom: none; }
+.itcd-admin .adm-tabela tbody tr:hover td { background: #FAFBFC; }
+.itcd-admin .adm-tabela td.tot { font-weight: 700; color: var(--strong); }
+.itcd-admin .adm-tabela td.nowrap { white-space: nowrap; }
+.itcd-admin .adm-tabela .vazio { text-align: center; color: var(--muted); padding: 24px; }
+.itcd-admin .doacoes-col { min-width: 240px; font-size: 13.5px; color: var(--muted); }
+.itcd-admin .acao-col { width: 90px; }
+
+.itcd-admin .btn-del { background: #fff; color: var(--erro); border: 1px solid #F3C6C6; border-radius: var(--r-sm); padding: 6px 14px; font-family: inherit; font-size: 13.5px; font-weight: 600; cursor: pointer; }
+.itcd-admin .btn-del:hover { background: #FEF2F2; }
+
+/* Avaliações */
+.itcd-admin .adm-resumo-av { font-size: 16px; color: var(--body); margin-bottom: 14px; }
+.itcd-admin .estrelas-media, .itcd-admin .estrelas-cel { color: #F59E0B; letter-spacing: 1px; }
+
+/* Rodapé do painel: guia + simulador */
+.itcd-admin .adm-footer { margin-top: 28px; padding-top: 16px; border-top: 1px solid var(--borda); display: flex; align-items: center; justify-content: center; gap: 10px; font-size: 14px; color: var(--muted); flex-wrap: wrap; }
+.itcd-admin .adm-footer a { color: var(--azul); font-weight: 600; text-decoration: none; }
+.itcd-admin .adm-footer a:hover { text-decoration: underline; }
+
+/* Importação em lote (colar do Excel) */
+.itcd-admin .lote-box { background: #FAFBFC; border: 1px solid var(--borda); border-radius: var(--r); padding: 16px; margin: 4px 0 18px; }
+.itcd-admin .lote-titulo { font-size: 14px; font-weight: 700; color: var(--strong); margin-bottom: 6px; }
+.itcd-admin .lote-area { width: 100%; box-sizing: border-box; resize: vertical; font-family: ui-monospace, Consolas, monospace; font-size: 13px; color: var(--strong); padding: 10px 12px; border: 1px solid var(--borda-input); border-radius: var(--r); background: #fff; margin-bottom: 10px; white-space: pre; }
+.itcd-admin .lote-area:focus { outline: none; border-color: var(--azul); box-shadow: 0 0 0 3px rgba(42,102,217,.15); }
+.itcd-admin .lote-erros { margin: 10px 0 0; padding-left: 20px; font-size: 12.5px; color: var(--erro); }
+.itcd-admin .lote-erros li { margin-bottom: 3px; }
+
+/* Barra com botão Exportar CSV */
+.itcd-admin .adm-toolbar { display: flex; align-items: center; justify-content: space-between; gap: 12px; flex-wrap: wrap; margin: 4px 0 14px; }
+.itcd-admin .btn-exportar { display: inline-flex; align-items: center; gap: 6px; background: #fff; color: var(--azul); border: 1px solid #C7D7F7; border-radius: var(--r); padding: 9px 16px; font-family: inherit; font-size: 14px; font-weight: 600; cursor: pointer; }
+.itcd-admin .btn-exportar:hover { background: var(--azul-tint); }
+.itcd-admin .btn-exportar:disabled { color: var(--muted); border-color: var(--borda); cursor: not-allowed; }
+
+/* Mostrar/ocultar senha no login */
+.itcd-admin .lb-senha-wrap { position: relative; margin-bottom: 14px; }
+.itcd-admin .lb-senha-wrap .lb-input { margin-bottom: 0; padding-right: 46px; }
+.itcd-admin .lb-olho { position: absolute; top: 0; right: 0; height: 42px; width: 44px; background: none; border: none; cursor: pointer; display: flex; align-items: center; justify-content: center; padding: 0; border-radius: 0 var(--r) var(--r) 0; }
+.itcd-admin .lb-olho svg { width: 20px; height: 20px; stroke: var(--muted); fill: none; stroke-width: 1.8; stroke-linecap: round; stroke-linejoin: round; }
+.itcd-admin .lb-olho:hover svg { stroke: var(--azul); }
+.itcd-admin .lb-olho:focus-visible { outline: 3px solid var(--azul); outline-offset: -3px; }
+
+/* Textos justificados */
+.itcd-admin .adm-nota,
+.itcd-admin .adm-msg,
+.itcd-admin .lote-box .adm-nota,
+.itcd-admin .lote-erros li { text-align: left; }
+
+/* Alterar senha (colapsável) */
+.itcd-admin .alterar-senha { margin: 0 0 18px; border: 1px solid var(--borda); border-radius: var(--r); background: #FAFBFD; padding: 0; }
+.itcd-admin .alterar-senha summary { list-style: none; cursor: pointer; padding: 12px 16px; font-size: 14px; font-weight: 600; color: var(--label); user-select: none; }
+.itcd-admin .alterar-senha summary::-webkit-details-marker { display: none; }
+.itcd-admin .alterar-senha[open] summary { border-bottom: 1px solid var(--borda); }
+.itcd-admin .as-form { display: flex; gap: 14px; align-items: flex-end; flex-wrap: wrap; padding: 16px; }
+.itcd-admin .as-campo label { display: block; font-size: 14px; font-weight: 600; color: var(--label); margin-bottom: 5px; }
+.itcd-admin .as-campo input { height: 40px; padding: 0 12px; border: 1px solid var(--borda-input); border-radius: var(--r); font-family: inherit; font-size: 15px; color: var(--strong); background: #fff; width: 210px; }
+.itcd-admin .as-campo input:focus { outline: none; border-color: var(--azul); box-shadow: 0 0 0 3px rgba(42,102,217,.15); }
+.itcd-admin .as-msg { margin: 0 16px 12px; font-size: 13.5px; font-weight: 600; }
+.itcd-admin .as-erro { color: var(--erro); }
+.itcd-admin .as-ok { color: var(--ok); }
+.itcd-admin .alterar-senha .adm-nota { margin: 0 16px 14px; }
+
+
+/* Paginador das listas */
+.itcd-admin .adm-paginador { display: flex; align-items: center; justify-content: center; gap: 16px; margin-top: 14px; font-size: 14px; color: var(--label); }
+.itcd-admin .btn-pag { background: #fff; border: 1px solid var(--borda-input); border-radius: var(--r); padding: 7px 14px; font-family: inherit; font-size: 13.5px; font-weight: 600; color: var(--azul); cursor: pointer; }
+.itcd-admin .btn-pag:hover:not(:disabled) { background: var(--azul-tint); }
+.itcd-admin .btn-pag:disabled { opacity: .45; cursor: not-allowed; }
+
+
+/* Login: "Acesso restrito." centralizado */
+.itcd-admin .login-box p { text-align: center; }
+
+/* Header: ações lado a lado */
+.itcd-admin .adm-acoes { display: flex; align-items: center; gap: 10px; }
+.itcd-admin .btn-alt-senha { display: inline-flex; align-items: center; gap: 8px; background: #fff; color: var(--azul); border: 1px solid var(--borda-input); border-radius: var(--r); padding: 9px 14px; font-family: inherit; font-size: 13.5px; font-weight: 600; cursor: pointer; }
+.itcd-admin .btn-alt-senha:hover { background: var(--azul-tint); }
+.itcd-admin .btn-alt-senha svg { width: 16px; height: 16px; stroke: currentColor; fill: none; stroke-width: 1.8; stroke-linecap: round; stroke-linejoin: round; }
+.itcd-admin .btn-alt-senha[aria-expanded="true"] { background: var(--azul); border-color: var(--azul); color: #fff; }
+
+/* Painel de alterar senha (aberto pelo botão) */
+.itcd-admin .alterar-senha { padding-top: 4px; }
+
+/* Box de migração (empacotar índices) */
+.itcd-admin .guia-doc @import url('https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700;800&display=swap');
+
+  :root {
+    --azul:#2A66D9; --azul-escuro:#1E4FB0; --azul-tint:#EEF3FE;
+    --strong:#101828; --label:#364153; --body:#4A5565; --muted:#6A7282;
+    --borda:#E4E7EC; --ambar-bg:#FFFBEB; --ambar-bd:#FDE68A; --ambar-fg:#92400E;
+    --verm:#DC2626; --verde:#067647;
+  }
+.itcd-admin .guia-doc * { box-sizing:border-box; }
+.itcd-admin .guia-doc, .itcd-admin .guia-doc { margin:0; padding:0; }
+.itcd-admin .guia-doc { font-family:'Manrope',system-ui,sans-serif; color:var(--body); font-size:13.5px; line-height:1.6; background:#F3F4F6; }
+.itcd-admin .guia-doc .pagina { max-width:210mm; margin:0 auto; background:#fff; padding:22mm 18mm 24mm; }
+.itcd-admin .guia-doc .doc-header { display:flex; justify-content:space-between; align-items:flex-start; border-bottom:3px solid var(--azul); padding-bottom:14px; margin-bottom:8px; }
+.itcd-admin .guia-doc .dh-left .orgao { font-size:11px; letter-spacing:.08em; text-transform:uppercase; color:var(--muted); font-weight:600; }
+.itcd-admin .guia-doc .dh-left h1 { margin:2px 0 0; font-size:21px; color:var(--strong); font-weight:800; }
+.itcd-admin .guia-doc .dh-left .sub { margin:2px 0 0; font-size:13px; color:var(--muted); }
+.itcd-admin .guia-doc .dh-badge { background:var(--azul); color:#fff; font-size:10.5px; font-weight:700; letter-spacing:.05em; text-transform:uppercase; padding:5px 12px; border-radius:999px; white-space:nowrap; }
+.itcd-admin .guia-doc .doc-meta { font-size:11.5px; color:var(--muted); margin-bottom:18px; }
+.itcd-admin .guia-doc .links-nav { display:flex; gap:10px; flex-wrap:wrap; margin-bottom:22px; }
+.itcd-admin .guia-doc .links-nav a { display:inline-block; font-size:12.5px; font-weight:600; color:var(--azul); border:1px solid #C7D7F7; background:var(--azul-tint); border-radius:8px; padding:7px 14px; text-decoration:none; }
+.itcd-admin .guia-doc .links-nav a:hover { background:#DFE9FC; }
+.itcd-admin .guia-doc h2 { font-size:16px; color:var(--strong); font-weight:800; border-left:4px solid var(--azul); padding-left:10px; margin:30px 0 10px; }
+.itcd-admin .guia-doc h3 { font-size:13.5px; color:var(--label); font-weight:700; margin:18px 0 6px; }
+.itcd-admin .guia-doc p { margin:0 0 10px; }
+.itcd-admin .guia-doc ul, .itcd-admin .guia-doc ol { margin:0 0 12px; padding-left:22px; }
+.itcd-admin .guia-doc li { margin-bottom:6px; }
+.itcd-admin .guia-doc strong { color:var(--strong); }
+.itcd-admin .guia-doc code { font-family:ui-monospace,'Cascadia Mono',Consolas,monospace; font-size:12px; background:#F1F3F7; border:1px solid var(--borda); border-radius:4px; padding:1px 5px; color:#0F3E9E; }
+.itcd-admin .guia-doc .caminho { display:inline-block; background:#0F172A; color:#E2E8F0; border-radius:6px; padding:2px 10px; font-family:ui-monospace,Consolas,monospace; font-size:11.5px; }
+.itcd-admin .guia-doc table { width:100%; border-collapse:collapse; font-size:12px; margin:8px 0 16px; }
+.itcd-admin .guia-doc thead th { background:#EAEEF7; color:var(--label); font-weight:700; text-align:left; padding:7px 10px; border:1px solid var(--borda); }
+.itcd-admin .guia-doc tbody td { padding:6px 10px; border:1px solid var(--borda); vertical-align:top; }
+.itcd-admin .guia-doc tbody tr:nth-child(even) td { background:#FAFBFD; }
+.itcd-admin .guia-doc .alerta { background:var(--ambar-bg); border:1px solid var(--ambar-bd); border-left:4px solid #D97706; border-radius:8px; padding:12px 14px; margin:12px 0 16px; }
+.itcd-admin .guia-doc .alerta .t { font-weight:800; color:var(--ambar-fg); display:block; margin-bottom:3px; font-size:12.5px; text-transform:uppercase; letter-spacing:.04em; }
+.itcd-admin .guia-doc .dica { background:var(--azul-tint); border:1px solid #C7D7F7; border-left:4px solid var(--azul); border-radius:8px; padding:12px 14px; margin:12px 0 16px; }
+.itcd-admin .guia-doc .dica .t { font-weight:800; color:var(--azul-escuro); display:block; margin-bottom:3px; font-size:12.5px; text-transform:uppercase; letter-spacing:.04em; }
+.itcd-admin .guia-doc .num-pill { display:inline-flex; align-items:center; justify-content:center; min-width:22px; height:22px; border-radius:999px; background:var(--azul); color:#fff; font-size:12px; font-weight:800; margin-right:8px; }
+.itcd-admin .guia-doc .checklist li { margin-bottom:8px; }
+.itcd-admin .guia-doc .doc-footer { margin-top:34px; border-top:1px solid var(--borda); padding-top:12px; font-size:11px; color:var(--muted); display:flex; justify-content:space-between; gap:12px; flex-wrap:wrap; }
+.itcd-admin .guia-doc /* ===== IMPRESSÃO A4 ===== */
+  @page { size:A4; margin:20mm 16mm 20mm; }
+
+  @media print{.itcd-admin .guia-doc { background:#fff; font-size:11.5pt; }
+.itcd-admin .guia-doc .pagina { max-width:none; padding:0; margin:0; }
+.itcd-admin .guia-doc .links-nav { display:none; }
+.itcd-admin .guia-doc h2 { page-break-after:avoid; }
+.itcd-admin .guia-doc table, .itcd-admin .guia-doc .alerta, .itcd-admin .guia-doc .dica { page-break-inside:avoid; }
+.itcd-admin .guia-doc thead { display:table-header-group; }
+.itcd-admin .guia-doc .print-run-header { position:fixed; top:-14mm; left:0; right:0; font-size:9pt; color:#6A7282; display:flex; justify-content:space-between; border-bottom:1px solid #E4E7EC; padding-bottom:2mm; }
+.itcd-admin .guia-doc .print-run-footer { position:fixed; bottom:-14mm; left:0; right:0; font-size:9pt; color:#6A7282; display:flex; justify-content:space-between; border-top:1px solid #E4E7EC; padding-top:2mm; }}
+.itcd-admin .guia-doc .print-run-header, .itcd-admin .guia-doc .print-run-footer { display:none; }
+
+  @media print{.itcd-admin .guia-doc .print-run-header, .itcd-admin .guia-doc .print-run-footer { display:flex; }}
+/* Aba Guia: contêiner e impressão isolada */
+.itcd-admin .guia-doc { background: #fff; border: 1px solid var(--borda); border-radius: var(--r); padding: 28px 32px; margin-top: 4px; }
+@media print {
+  .itcd-admin.guia-ativa .adm-header,
+  .itcd-admin.guia-ativa .adm-tabs,
+  .itcd-admin.guia-ativa .alterar-senha,
+  .itcd-admin.guia-ativa .adm-footer,
+  .itcd-admin.guia-ativa .guia-toolbar { display: none !important; }
+  .itcd-admin.guia-ativa .guia-doc { border: none; padding: 0; }
+}
+
+/* ===== [NOVO] Popup de virada de mês (índices) ===== */
+.itcd-admin .itcd-modal-overlay { position: fixed; inset: 0; background: rgba(16,24,40,.55); display: flex; align-items: center; justify-content: center; z-index: 1000; padding: 16px; box-sizing: border-box; }
+.itcd-admin .itcd-modal { background: #fff; border-radius: 12px; max-width: 460px; width: 100%; padding: 26px 26px 20px; box-shadow: 0 16px 48px rgba(16,24,40,.28); box-sizing: border-box; }
+.itcd-admin .mv-icone { width: 48px; height: 48px; border-radius: 50%; background: #F3F7FE; display: flex; align-items: center; justify-content: center; margin-bottom: 14px; }
+.itcd-admin .mv-icone svg { width: 26px; height: 26px; stroke: #2A66D9; fill: none; stroke-width: 1.8; stroke-linecap: round; stroke-linejoin: round; }
+.itcd-admin .itcd-modal h3 { margin: 0 0 6px; font-size: 20px; font-weight: 700; color: #101828; }
+.itcd-admin .mv-texto { margin: 0 0 18px; font-size: 15px; line-height: 1.5; color: #4A5565; }
+.itcd-admin .mv-texto strong { color: #2A66D9; }
+.itcd-admin .mv-campo { margin-bottom: 16px; }
+.itcd-admin .mv-campo label { display: block; font-size: 14px; font-weight: 600; color: #364153; margin-bottom: 6px; }
+.itcd-admin .mv-req { color: #DC2626; }
+.itcd-admin .mv-campo input { width: 100%; box-sizing: border-box; height: 44px; padding: 0 14px; font-size: 16px; color: #101828; border: 1px solid #D1D5DC; border-radius: 8px; outline: none; }
+.itcd-admin .mv-campo input:focus { border-color: #2A66D9; box-shadow: 0 0 0 3px rgba(42,102,217,.18); }
+.itcd-admin .mv-hint { display: block; margin-top: 5px; font-size: 12.5px; color: #6A7282; line-height: 1.45; }
+.itcd-admin .mv-msg { margin: 0 0 12px; font-size: 13.5px; font-weight: 600; color: #B91C1C; }
+.itcd-admin .mv-acoes { display: flex; gap: 10px; align-items: center; margin-top: 4px; }
+.itcd-admin .mv-salvar { flex: 1; }
+.itcd-admin .mv-adiar { height: 44px; padding: 0 16px; background: #fff; color: #4A5565; border: 1px solid #D1D5DC; border-radius: 8px; font-size: 15px; font-weight: 600; cursor: pointer; }
+.itcd-admin .mv-nota { margin: 14px 0 0; font-size: 12px; color: #6A7282; line-height: 1.45; }
+/* Campo SELIC do mês corrente bloqueado no formulário de índices */
+.itcd-admin .af-fixo { height: 42px; display: flex; align-items: center; gap: 8px; padding: 0 12px; box-sizing: border-box; background: #F3F4F6; border: 1px dashed #D1D5DC; border-radius: 8px; color: #6A7282; font-size: 15px; font-weight: 700; }
+.itcd-admin .af-fixo span { font-weight: 400; font-size: 12px; line-height: 1.25; }
