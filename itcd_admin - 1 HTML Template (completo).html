@@ -114,6 +114,10 @@
       </div>
 
 
+      <div class="adm-toolbar">
+        <p class="adm-nota" style="margin:0;">{{c.data.indices.length}} mês(es) na tabela &middot; exporta no formato do "Importar lote".</p>
+        <button class="btn-exportar" ng-click="c.exportarIndices()" ng-disabled="!c.data.indices.length">&#11123; Exportar CSV</button>
+      </div>
       <div class="adm-tabela-wrap">
         <table class="adm-tabela">
           <thead><tr><th>Mês</th><th class="num">UPF (R$)</th><th class="num">SELIC (%)</th><th class="acao-col"></th></tr></thead>

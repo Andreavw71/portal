@@ -141,6 +141,24 @@ api.controller = function() {
     baixarCSV('itcd_avaliacoes.csv', L);
   };
 
+  // ===== [NOVO] Exportar índices no formato do "Importar lote" (Mês;UPF;SELIC) =====
+  c.exportarIndices = function() {
+    var lista = (c.data.indices || []).slice().sort(function(a, b) { return a.mes < b.mes ? -1 : (a.mes > b.mes ? 1 : 0); });
+    var linhas = [];
+    lista.forEach(function(ix) {
+      var upf = (ix.upf === null || ix.upf === undefined || ix.upf === '') ? '' : String(ix.upf).replace('.', ',');
+      var sel = (ix.selic === null || ix.selic === undefined || ix.selic === '') ? '' : String(ix.selic).replace('.', ',');
+      linhas.push(ix.mes + ';' + upf + ';' + sel);
+    });
+    var csv = '\ufeff' + linhas.join('\r\n');
+    var blob = new Blob([csv], { type: 'text/csv;charset=utf-8;' });
+    var a = document.createElement('a');
+    a.href = URL.createObjectURL(blob);
+    a.download = 'itcd_indices.csv';
+    document.body.appendChild(a); a.click();
+    setTimeout(function() { URL.revokeObjectURL(a.href); a.remove(); }, 200);
+  };
+
   c.parseDoacoes = function(json) {
     try {
       var arr = JSON.parse(json || '[]');
